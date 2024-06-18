@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/user")
@@ -34,10 +33,6 @@ public class UserController {
 
         userDto.setId(id);
 
-        try {
-            return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
-        } catch (NoSuchElementException ex) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(userService.updateUser(userDto), HttpStatus.OK);
     }
 }
