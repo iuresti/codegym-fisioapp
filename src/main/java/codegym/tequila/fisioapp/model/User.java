@@ -1,8 +1,17 @@
 package codegym.tequila.fisioapp.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
     private String id;
     private String name;
+    @Column(name = "last_name")
     private String lastName;
     private String avatar;
     private String user;

@@ -4,6 +4,7 @@ import codegym.tequila.fisioapp.dto.UserDto;
 import codegym.tequila.fisioapp.model.User;
 import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.UserService;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,9 +31,9 @@ public class UserServiceImpl implements UserService {
         user.setUser(userDto.getUser());
         user.setLastName(userDto.getLastName());
         user.setName(userDto.getName());
-        user.setPassword(UUID.randomUUID().toString());
+        user.setPassword(UUID.randomUUID().toString().substring(0, 15));
 
-        userRepository.createUser(user);
+        userRepository.save(user);
 
         userDto.setId(user.getId());
 
@@ -41,18 +42,44 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getUsers() {
-        return userRepository.getUsers().stream()
-                .map(user -> {
-                    UserDto userDto = new UserDto();
+        return userRepository.findAll().stream()
+                .map(UserServiceImpl::convertUserToDto)
+                .collect(Collectors.toList());
+    }
 
-                    userDto.setId(user.getId());
-                    userDto.setAvatar(user.getAvatar());
-                    userDto.setEmail(user.getEmail());
-                    userDto.setUser(user.getUser());
-                    userDto.setLastName(user.getLastName());
-                    userDto.setName(user.getName());
+    @Override
+    public UserDto updateUser(UserDto userDto) {
+        User user = userRepository.findById(userDto.getId()).orElseThrow();
 
-                    return userDto;
-                }).collect(Collectors.toList());
+        if(!StringUtils.isEmpty(userDto.getName())){
+            user.setName(userDto.getName());
+        }
+
+        if(!StringUtils.isEmpty(userDto.getLastName())){
+            user.setLastName(userDto.getLastName());
+        }
+
+        if(!StringUtils.isEmpty(userDto.getAvatar())){
+            user.setAvatar(userDto.getAvatar());
+        }
+
+        if(!StringUtils.isEmpty(userDto.getEmail())){
+            user.setEmail(userDto.getEmail());
+        }
+
+        return convertUserToDto(userRepository.save(user));
+    }
+
+    private static UserDto convertUserToDto(User user) {
+        UserDto userDto = new UserDto();
+
+        userDto.setId(user.getId());
+        userDto.setAvatar(user.getAvatar());
+        userDto.setEmail(user.getEmail());
+        userDto.setUser(user.getUser());
+        userDto.setLastName(user.getLastName());
+        userDto.setName(user.getName());
+
+        return userDto;
     }
 }
