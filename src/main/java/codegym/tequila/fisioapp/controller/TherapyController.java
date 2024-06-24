@@ -2,6 +2,9 @@ package codegym.tequila.fisioapp.controller;
 
 import codegym.tequila.fisioapp.dto.TherapyDto;
 import codegym.tequila.fisioapp.service.TherapyService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,20 +13,20 @@ import java.util.List;
 @RequestMapping("/api/therapy")
 public class TherapyController {
 
-    private TherapyService therapyService;
+    private final TherapyService therapyService;
 
     public TherapyController(TherapyService therapyService) {
         this.therapyService = therapyService;
     }
 
     @PostMapping
-    public TherapyDto createTherapy(@RequestBody TherapyDto therapyDto) {
-        return therapyService.createTherapy(therapyDto);
+    public ResponseEntity<TherapyDto> createTherapy(@RequestBody TherapyDto therapyDto) {
+        return new ResponseEntity<>(therapyService.createTherapy(therapyDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public TherapyDto updateTherapy(@PathVariable("id") String id, @RequestBody TherapyDto therapyDto) {
-        return therapyService.updateTherapy(id, therapyDto);
+    public ResponseEntity<TherapyDto> updateTherapy(@PathVariable("id") String id, @RequestBody TherapyDto therapyDto) {
+        return new ResponseEntity<>(therapyService.updateTherapy(id, therapyDto), HttpStatus.OK);
     }
 
     @PutMapping("/{id}/deactivate")
@@ -37,20 +40,17 @@ public class TherapyController {
     }
 
     @GetMapping("/{id}")
-    public TherapyDto getTherapyById(@PathVariable String id) {
-        return therapyService.getTherapy(id);
+    public ResponseEntity<TherapyDto> getTherapyById(@PathVariable String id) {
+        return new ResponseEntity<>(therapyService.getTherapy(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public List<TherapyDto> getTherapys(
+    public ResponseEntity<List<TherapyDto>> getTherapys(
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Integer pageIndex,
             @RequestParam(required = false) Boolean all,
             @RequestParam(required = false) Boolean inactive
     ) {
-        return therapyService.getTherapies(pageSize, pageIndex, all, inactive);
+        return new ResponseEntity<>(therapyService.getTherapies(pageSize, pageIndex, all, inactive), HttpStatus.OK);
     }
-
-
-
 }
