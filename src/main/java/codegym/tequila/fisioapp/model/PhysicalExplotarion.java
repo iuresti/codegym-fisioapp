@@ -1,16 +1,9 @@
 package codegym.tequila.fisioapp.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-@Entity
-@Table(name = "physical_exploration", schema = "fisioapp")
+@Embeddable
 public class PhysicalExplotarion {
-
-    @Id
-    private String id;
 
     @Column(precision = 5, scale = 2)
     private Double weight;
@@ -21,14 +14,6 @@ public class PhysicalExplotarion {
     private Integer weeklyCardiofrequency;
     @Column(name = "blood_type")
     private String bloodType;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public Double getWeight() {
         return weight;

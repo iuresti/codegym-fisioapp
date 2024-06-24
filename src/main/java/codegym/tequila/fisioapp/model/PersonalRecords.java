@@ -1,16 +1,10 @@
 package codegym.tequila.fisioapp.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
-@Entity
-@Table(name = "personal_records", schema = "fisioapp")
+@Embeddable
 public class PersonalRecords {
 
-    @Id
-    private String id;
     @Column(name = "chronic_diseases")
     private String chronicDiseases;
     @Column(name = "previous_surgeries_and_hospitalizations")
@@ -31,14 +25,6 @@ public class PersonalRecords {
 
     @Column(name = "musculoskeletal_conditions")
     private String musculoskeletalConditions;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getChronicDiseases() {
         return chronicDiseases;

@@ -1,11 +1,12 @@
 package codegym.tequila.fisioapp.service.impl;
 
-import codegym.tequila.fisioapp.model.MedicalRecord;
+import codegym.tequila.fisioapp.model.*;
 import codegym.tequila.fisioapp.repository.MedicalRecordRepository;
 import codegym.tequila.fisioapp.service.MedicalRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
 @Service
 public class MedicalRecordServiceImpl implements MedicalRecordService {
 
@@ -24,14 +25,67 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
         MedicalRecord medicalRecordUsage = medicalRecordRepository.findById(medicalRecord.getId()).orElseThrow();
 
-        if (medicalRecord.getPhysicalExplotarion() != null){
-            medicalRecordUsage.setPhysicalExplotarion(medicalRecord.getPhysicalExplotarion());
+        PersonalRecords usagePersonalRecords = medicalRecordUsage.getPersonalRecords();
+        PersonalRecords updatePersonalRecords = medicalRecord.getPersonalRecords();
+
+        if (updatePersonalRecords != null) {
+            if (!updatePersonalRecords.getChronicDiseases().isEmpty()) {
+                usagePersonalRecords.setChronicDiseases(updatePersonalRecords.getChronicDiseases());
+            }
+            if (!updatePersonalRecords.getPreviousSurgeriesAndHospitalizations().isEmpty()) {
+                usagePersonalRecords.setPreviousSurgeriesAndHospitalizations(updatePersonalRecords.getPreviousSurgeriesAndHospitalizations());
+            }
+            if (!updatePersonalRecords.getMedicines().isEmpty()) {
+                usagePersonalRecords.setMedicines(updatePersonalRecords.getMedicines());
+            }
+            if (!updatePersonalRecords.getAllergies().isEmpty()) {
+                usagePersonalRecords.setAllergies(updatePersonalRecords.getAllergies());
+            }
+            if (!updatePersonalRecords.getNeurologicalConditions().isEmpty()) {
+                usagePersonalRecords.setNeurologicalConditions(updatePersonalRecords.getNeurologicalConditions());
+            }
+            if (!updatePersonalRecords.getCardiovascularConditions().isEmpty()) {
+                usagePersonalRecords.setCardiovascularConditions(updatePersonalRecords.getCardiovascularConditions());
+            }
+            if (!updatePersonalRecords.getRespiratoryConditions().isEmpty()) {
+                usagePersonalRecords.setRespiratoryConditions(updatePersonalRecords.getRespiratoryConditions());
+            }
+            if (!updatePersonalRecords.getMusculoskeletalConditions().isEmpty()) {
+                usagePersonalRecords.setMusculoskeletalConditions(updatePersonalRecords.getMusculoskeletalConditions());
+            }
+            medicalRecordUsage.setPersonalRecords(usagePersonalRecords);
         }
-        if (medicalRecord.getPersonalRecords() != null){
-            medicalRecordUsage.setPersonalRecords(medicalRecord.getPersonalRecords());
+
+        PhysicalExplotarion usagePhysicalExploration = medicalRecordUsage.getPhysicalExplotarion();
+        PhysicalExplotarion updatePhysicalExploration = medicalRecord.getPhysicalExplotarion();
+
+        if (updatePhysicalExploration != null) {
+            if (updatePhysicalExploration.getWeight() != null) {
+                usagePhysicalExploration.setWeight(updatePhysicalExploration.getWeight());
+            }
+            if (updatePhysicalExploration.getHeight() != null) {
+                usagePhysicalExploration.setHeight(updatePhysicalExploration.getHeight());
+            }
+            if (updatePhysicalExploration.getWeeklyCardiofrequency() != null) {
+                usagePhysicalExploration.setWeeklyCardiofrequency(updatePhysicalExploration.getWeeklyCardiofrequency());
+            }
+            if (!updatePhysicalExploration.getBloodType().isEmpty()) {
+                usagePhysicalExploration.setBloodType(updatePhysicalExploration.getBloodType());
+            }
+            medicalRecordUsage.setPhysicalExplotarion(usagePhysicalExploration);
         }
-        if (medicalRecord.getFamiliarRecords() != null){
-            medicalRecordUsage.setFamiliarRecords(medicalRecord.getFamiliarRecords());
+
+        FamiliarRecords usageFamiliarRecords = medicalRecordUsage.getFamiliarRecords();
+        FamiliarRecords updateFamiliarRecords = medicalRecord.getFamiliarRecords();
+
+        if (updateFamiliarRecords != null) {
+            if (!updateFamiliarRecords.getHereditaryDiseases().isEmpty()) {
+                usageFamiliarRecords.setHereditaryDiseases(updateFamiliarRecords.getHereditaryDiseases());
+            }
+            if (!updateFamiliarRecords.getGeneticalPredispositions().isEmpty()) {
+                usageFamiliarRecords.setGeneticalPredispositions(updateFamiliarRecords.getGeneticalPredispositions());
+            }
+            medicalRecordUsage.setFamiliarRecords(usageFamiliarRecords);
         }
 
         return medicalRecordRepository.save(medicalRecordUsage);

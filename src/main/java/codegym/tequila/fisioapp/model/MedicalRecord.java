@@ -17,16 +17,13 @@ public class MedicalRecord {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "physical_exploration_id")
+    @Embedded
     private PhysicalExplotarion physicalExplotarion;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "personal_records_id")
+    @Embedded
     private PersonalRecords personalRecords;
 
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "familiar_records_id")
+    @Embedded
     private FamiliarRecords familiarRecords;
 
     public String getId() {
