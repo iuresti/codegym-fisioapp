@@ -1,13 +1,13 @@
 package codegym.tequila.fisioapp.service;
 
 import codegym.tequila.fisioapp.dto.UserDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
     UserDto createUser(UserDto userDto);
 
-    List<UserDto> getUsers();
+    Page<UserDto> getUsers(Pageable pageable);
 
     UserDto updateUser(UserDto userDto);
 }
