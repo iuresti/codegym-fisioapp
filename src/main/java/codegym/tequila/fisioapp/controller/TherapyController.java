@@ -83,7 +83,8 @@ public class TherapyController {
     ) {
         long startTime = System.currentTimeMillis();
 
-        logger.info("getTherapies was called");
+        logger.info("getTherapies was called with: pageSize={},pageIndex={},all={},inactive={}", pageSize, pageIndex, all, inactive);
+
         List<TherapyDto> therapies = therapyService.getTherapies(pageSize, pageIndex, all, inactive);
         logger.info("getTherapies completed successfully in {} ms", (System.currentTimeMillis() - startTime));
 
