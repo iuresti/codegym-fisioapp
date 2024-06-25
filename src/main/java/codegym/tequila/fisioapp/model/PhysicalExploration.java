@@ -3,7 +3,7 @@ package codegym.tequila.fisioapp.model;
 import jakarta.persistence.*;
 
 @Embeddable
-public class PhysicalExplotarion {
+public class PhysicalExploration {
 
     @Column(precision = 5, scale = 2)
     private Double weight;

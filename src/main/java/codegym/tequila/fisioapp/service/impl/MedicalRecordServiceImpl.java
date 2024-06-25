@@ -5,8 +5,6 @@ import codegym.tequila.fisioapp.repository.MedicalRecordRepository;
 import codegym.tequila.fisioapp.service.MedicalRecordService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 public class MedicalRecordServiceImpl implements MedicalRecordService {
 
@@ -56,8 +54,8 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
             medicalRecordUsage.setPersonalRecords(usagePersonalRecords);
         }
 
-        PhysicalExplotarion usagePhysicalExploration = medicalRecordUsage.getPhysicalExplotarion();
-        PhysicalExplotarion updatePhysicalExploration = medicalRecord.getPhysicalExplotarion();
+        PhysicalExploration usagePhysicalExploration = medicalRecordUsage.getPhysicalExplotarion();
+        PhysicalExploration updatePhysicalExploration = medicalRecord.getPhysicalExplotarion();
 
         if (updatePhysicalExploration != null) {
             if (updatePhysicalExploration.getWeight() != null) {

@@ -18,7 +18,7 @@ public class MedicalRecord {
     private Patient patient;
 
     @Embedded
-    private PhysicalExplotarion physicalExplotarion;
+    private PhysicalExploration physicalExploration;
 
     @Embedded
     private PersonalRecords personalRecords;
@@ -42,12 +42,12 @@ public class MedicalRecord {
         this.patient = patient;
     }
 
-    public PhysicalExplotarion getPhysicalExplotarion() {
-        return physicalExplotarion;
+    public PhysicalExploration getPhysicalExplotarion() {
+        return physicalExploration;
     }
 
-    public void setPhysicalExplotarion(PhysicalExplotarion physicalExplotarion) {
-        this.physicalExplotarion = physicalExplotarion;
+    public void setPhysicalExplotarion(PhysicalExploration physicalExploration) {
+        this.physicalExploration = physicalExploration;
     }
 
     public PersonalRecords getPersonalRecords() {
