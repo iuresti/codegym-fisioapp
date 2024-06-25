@@ -4,11 +4,12 @@ import codegym.tequila.fisioapp.dto.UserDto;
 import codegym.tequila.fisioapp.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -28,11 +29,13 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserDto> getUsers() {
+    public Page<UserDto> getUsers() {
         long startTime = System.currentTimeMillis();
         logger.info("Get Users request");
 
-        List<UserDto> users = userService.getUsers();
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Page<UserDto> users = userService.getUsers(pageable);
 
         logger.info("Get Users completed successfully in {} ms", (System.currentTimeMillis() - startTime));
 

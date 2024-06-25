@@ -9,6 +9,7 @@ public class UserDto {
     private String avatar;
     private String user;
     private String email;
+    private String password;
 
     public String getId() {
         return id;
@@ -56,6 +57,14 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @Override
