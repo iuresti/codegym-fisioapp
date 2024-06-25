@@ -1,5 +1,7 @@
 package codegym.tequila.fisioapp.dto;
 
+import java.util.StringJoiner;
+
 public class UserDto {
     private String id;
     private String name;
@@ -54,5 +56,17 @@ public class UserDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", UserDto.class.getSimpleName() + "[", "]")
+                .add("id='" + id + "'")
+                .add("name='" + name + "'")
+                .add("lastName='" + lastName + "'")
+                .add("avatar='" + avatar + "'")
+                .add("user='" + user + "'")
+                .add("email='" + email + "'")
+                .toString();
     }
 }

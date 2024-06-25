@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,15 @@ public class TherapyServiceImpl implements TherapyService {
 
     @Override
     public TherapyDto createTherapy(TherapyDto therapyDto) {
+
+        if(!StringUtils.hasLength(therapyDto.getName())){
+            throw new IllegalArgumentException("Therapy must have a name");
+        }
+
+        if(!StringUtils.hasLength(therapyDto.getDescription())){
+            throw new IllegalArgumentException("Therapy must have a description");
+        }
+
         Therapy therapy = new Therapy();
 
         therapy.setId(UUID.randomUUID().toString());
@@ -37,13 +47,14 @@ public class TherapyServiceImpl implements TherapyService {
     @Override
     public TherapyDto updateTherapy(String therapyId, TherapyDto therapyDto) {
 
-        Therapy therapy = therapyRepository.findById(therapyId).orElseThrow();
+        Therapy therapy = therapyRepository.findById(therapyId)
+                .orElseThrow(()->new NoSuchElementException("Therapy " + therapyId + " not found"));
 
-        if (!StringUtils.isEmpty(therapyDto.getName())) {
+        if (StringUtils.hasLength(therapyDto.getName())) {
             therapy.setName(therapyDto.getName());
         }
 
-        if (!StringUtils.isEmpty(therapyDto.getDescription())) {
+        if (StringUtils.hasLength(therapyDto.getDescription())) {
             therapy.setDescription(therapyDto.getDescription());
         }
 
@@ -52,7 +63,8 @@ public class TherapyServiceImpl implements TherapyService {
 
     @Override
     public void deactivateTherapy(String therapyId) {
-        Therapy therapy = therapyRepository.findById(therapyId).orElseThrow();
+        Therapy therapy = therapyRepository.findById(therapyId)
+                .orElseThrow(()->new NoSuchElementException("Therapy " + therapyId + " not found"));
 
         therapy.setActive(false);
         therapyRepository.save(therapy);
@@ -60,7 +72,8 @@ public class TherapyServiceImpl implements TherapyService {
 
     @Override
     public void activateTherapy(String therapyId) {
-        Therapy therapy = therapyRepository.findById(therapyId).orElseThrow();
+        Therapy therapy = therapyRepository.findById(therapyId)
+                .orElseThrow(()->new NoSuchElementException("Therapy " + therapyId + " not found"));
 
         therapy.setActive(true);
         therapyRepository.save(therapy);
@@ -69,7 +82,8 @@ public class TherapyServiceImpl implements TherapyService {
 
     @Override
     public TherapyDto getTherapy(String therapyId) {
-        Therapy therapy = therapyRepository.findById(therapyId).orElseThrow();
+        Therapy therapy = therapyRepository
+                .findById(therapyId).orElseThrow(()->new NoSuchElementException("Therapy " + therapyId + " not found"));
 
         return convertTherapyToDto(therapy);
     }

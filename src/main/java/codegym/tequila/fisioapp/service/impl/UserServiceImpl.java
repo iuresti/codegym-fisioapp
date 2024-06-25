@@ -6,8 +6,10 @@ import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.UserService;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -20,6 +22,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
     public UserDto createUser(UserDto userDto) {
 
@@ -49,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto userDto) {
-        User user = userRepository.findById(userDto.getId()).orElseThrow();
+        User user = userRepository.findById(userDto.getId()).orElseThrow(()->new NoSuchElementException("User " + userDto.getId() + " not found"));
 
         if(!StringUtils.isEmpty(userDto.getName())){
             user.setName(userDto.getName());
