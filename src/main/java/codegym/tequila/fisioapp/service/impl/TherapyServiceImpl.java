@@ -4,6 +4,7 @@ import codegym.tequila.fisioapp.dto.TherapyDto;
 import codegym.tequila.fisioapp.model.Therapy;
 import codegym.tequila.fisioapp.repository.TherapyRepository;
 import codegym.tequila.fisioapp.service.TherapyService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -32,6 +33,7 @@ public class TherapyServiceImpl implements TherapyService {
         return convertTherapyToDto(therapyRepository.save(therapy));
     }
 
+    @Transactional
     @Override
     public TherapyDto updateTherapy(String therapyId, TherapyDto therapyDto) {
 
