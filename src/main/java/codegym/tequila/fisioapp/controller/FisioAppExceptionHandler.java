@@ -24,7 +24,9 @@ public class FisioAppExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Void> handleIllegalArgumentException(IllegalArgumentException exception){
+
         logger.error("Illegal argument exception", exception);
+
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
