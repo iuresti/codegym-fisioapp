@@ -3,15 +3,11 @@ package codegym.tequila.fisioapp.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "medical_record", schema = "fisioapp")
+@Table(name = "medical_record")
 public class MedicalRecord {
 
     @Id
     private String id;
-
-    //TODO: conectar patient a medical record con mappedBy y crear init
-//    @OneToOne(mappedBy = "patient")
-//    private MedicalRecord medicalRecord;
 
     @OneToOne
     @JoinColumn(name = "patient_id")
@@ -42,11 +38,11 @@ public class MedicalRecord {
         this.patient = patient;
     }
 
-    public PhysicalExploration getPhysicalExplotarion() {
+    public PhysicalExploration getPhysicalExploration() {
         return physicalExploration;
     }
 
-    public void setPhysicalExplotarion(PhysicalExploration physicalExploration) {
+    public void setPhysicalExploration(PhysicalExploration physicalExploration) {
         this.physicalExploration = physicalExploration;
     }
 

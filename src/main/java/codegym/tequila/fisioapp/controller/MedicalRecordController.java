@@ -1,15 +1,16 @@
 package codegym.tequila.fisioapp.controller;
 
 import codegym.tequila.fisioapp.model.MedicalRecord;
+import codegym.tequila.fisioapp.service.MedicalRecordService;
 import codegym.tequila.fisioapp.service.impl.MedicalRecordServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/medical-record")
 public class MedicalRecordController {
-    private final MedicalRecordServiceImpl medicalRecordService;
+    private final MedicalRecordService medicalRecordService;
 
     public MedicalRecordController(MedicalRecordServiceImpl medicalRecordService) {
         this.medicalRecordService = medicalRecordService;
@@ -20,7 +21,7 @@ public class MedicalRecordController {
         return medicalRecordService.createMedicalRecord(medicalRecord);
     }
 
-    @PutMapping("/medical-record/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable String id, @RequestBody MedicalRecord medicalRecord) {
 
         medicalRecord.setId(id);
@@ -28,13 +29,9 @@ public class MedicalRecordController {
         return new ResponseEntity<>(medicalRecordService.updateMedicalRecord(medicalRecord), HttpStatus.OK);
     }
 
-    @GetMapping("/medical-record/{id}")
+    @GetMapping("/{id}")
     public MedicalRecord findById(@PathVariable String id) {
         return medicalRecordService.findById(id);
     }
 
-    @GetMapping("/patient/{id}/medical-record")
-    public MedicalRecord findByPatientId(@PathVariable String id) {
-        return medicalRecordService.findByPatientId(id);
-    }
 }

@@ -11,7 +11,7 @@ public class PhysicalExploration {
     @Column(precision = 3, scale = 2)
     private Double height;
     @Column(name = "weekly_cardio_frequency")
-    private Integer weeklyCardiofrequency;
+    private Integer weeklyCardioFrequency;
     @Column(name = "blood_type")
     private String bloodType;
 
@@ -31,12 +31,12 @@ public class PhysicalExploration {
         this.height = height;
     }
 
-    public Integer getWeeklyCardiofrequency() {
-        return weeklyCardiofrequency;
+    public Integer getWeeklyCardioFrequency() {
+        return weeklyCardioFrequency;
     }
 
-    public void setWeeklyCardiofrequency(Integer weeklyCardiofrequency) {
-        this.weeklyCardiofrequency = weeklyCardiofrequency;
+    public void setWeeklyCardioFrequency(Integer weeklyCardiofrequency) {
+        this.weeklyCardioFrequency = weeklyCardiofrequency;
     }
 
     public String getBloodType() {

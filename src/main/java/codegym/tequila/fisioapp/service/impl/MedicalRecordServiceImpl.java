@@ -54,8 +54,8 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
             medicalRecordUsage.setPersonalRecords(usagePersonalRecords);
         }
 
-        PhysicalExploration usagePhysicalExploration = medicalRecordUsage.getPhysicalExplotarion();
-        PhysicalExploration updatePhysicalExploration = medicalRecord.getPhysicalExplotarion();
+        PhysicalExploration usagePhysicalExploration = medicalRecordUsage.getPhysicalExploration();
+        PhysicalExploration updatePhysicalExploration = medicalRecord.getPhysicalExploration();
 
         if (updatePhysicalExploration != null) {
             if (updatePhysicalExploration.getWeight() != null) {
@@ -64,13 +64,13 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
             if (updatePhysicalExploration.getHeight() != null) {
                 usagePhysicalExploration.setHeight(updatePhysicalExploration.getHeight());
             }
-            if (updatePhysicalExploration.getWeeklyCardiofrequency() != null) {
-                usagePhysicalExploration.setWeeklyCardiofrequency(updatePhysicalExploration.getWeeklyCardiofrequency());
+            if (updatePhysicalExploration.getWeeklyCardioFrequency() != null) {
+                usagePhysicalExploration.setWeeklyCardioFrequency(updatePhysicalExploration.getWeeklyCardioFrequency());
             }
             if (!updatePhysicalExploration.getBloodType().isEmpty()) {
                 usagePhysicalExploration.setBloodType(updatePhysicalExploration.getBloodType());
             }
-            medicalRecordUsage.setPhysicalExplotarion(usagePhysicalExploration);
+            medicalRecordUsage.setPhysicalExploration(usagePhysicalExploration);
         }
 
         FamiliarRecords usageFamiliarRecords = medicalRecordUsage.getFamiliarRecords();

@@ -1,6 +1,8 @@
 package codegym.tequila.fisioapp.model;
 
-import jakarta.persistence.*;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
 
 @Embeddable
 public class PersonalRecords {
