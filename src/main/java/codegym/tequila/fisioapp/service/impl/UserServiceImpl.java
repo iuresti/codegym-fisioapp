@@ -5,21 +5,26 @@ import codegym.tequila.fisioapp.model.User;
 import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.UserService;
 import io.micrometer.common.util.StringUtils;
+import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
+    @Transactional
     @Override
     public UserDto createUser(UserDto userDto) {
 
@@ -31,7 +36,7 @@ public class UserServiceImpl implements UserService {
         user.setUser(userDto.getUser());
         user.setLastName(userDto.getLastName());
         user.setName(userDto.getName());
-        user.setPassword(UUID.randomUUID().toString().substring(0, 15));
+        user.setPassword(BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt()));
 
         userRepository.save(user);
 
@@ -41,29 +46,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getUsers() {
-        return userRepository.findAll().stream()
-                .map(UserServiceImpl::convertUserToDto)
-                .collect(Collectors.toList());
+    public Page<UserDto> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable)
+                .map(UserServiceImpl::convertUserToDto);
     }
 
     @Override
     public UserDto updateUser(UserDto userDto) {
-        User user = userRepository.findById(userDto.getId()).orElseThrow();
+        User user = userRepository.findById(userDto.getId()).orElseThrow(() -> new NoSuchElementException("User " + userDto.getId() + " not found"));
 
-        if(!StringUtils.isEmpty(userDto.getName())){
+        if (!StringUtils.isEmpty(userDto.getName())) {
             user.setName(userDto.getName());
         }
 
-        if(!StringUtils.isEmpty(userDto.getLastName())){
+        if (!StringUtils.isEmpty(userDto.getLastName())) {
             user.setLastName(userDto.getLastName());
         }
 
-        if(!StringUtils.isEmpty(userDto.getAvatar())){
+        if (!StringUtils.isEmpty(userDto.getAvatar())) {
             user.setAvatar(userDto.getAvatar());
         }
 
-        if(!StringUtils.isEmpty(userDto.getEmail())){
+        if (!StringUtils.isEmpty(userDto.getEmail())) {
             user.setEmail(userDto.getEmail());
         }
 
