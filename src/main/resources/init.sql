@@ -8,7 +8,7 @@ CREATE TABLE users
     password  varchar(20),
     email     varchar(250)
 );
-create table medical_record
+CREATE TABLE medical_record
 (
     id                                      varchar(40) primary key,
     patient_id                              varchar(40),
@@ -27,4 +27,8 @@ create table medical_record
     hereditary_diseases                     varchar(255),
     genetical_predispositions               varchar(255),
     foreign key (patient_id) references patient (id)
+);
+CREATE TABLE patient (
+                          id varchar(40) PRIMARY KEY,
+                          name varchar(40)
 );

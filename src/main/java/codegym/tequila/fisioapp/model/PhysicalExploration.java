@@ -5,10 +5,10 @@ import jakarta.persistence.*;
 @Embeddable
 public class PhysicalExploration {
 
-    @Column(precision = 5, scale = 2)
+    @Column(columnDefinition = "DECIMAL(5, 2)")
     private Double weight;
 
-    @Column(precision = 3, scale = 2)
+    @Column(columnDefinition = "DECIMAL(3, 2)")
     private Double height;
     @Column(name = "weekly_cardio_frequency")
     private Integer weeklyCardioFrequency;
