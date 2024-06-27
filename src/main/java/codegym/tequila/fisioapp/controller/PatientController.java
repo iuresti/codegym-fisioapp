@@ -16,14 +16,14 @@ public class PatientController {
         this.patientService = patientService;
     }
 
-    @GetMapping("/{Id}/medical-record")
-    public ResponseEntity<MedicalRecord> getPatientMedicalRecord(@PathVariable String Id) {
-        MedicalRecord medicalRecord = patientService.getMedicalRecordForPatient(Id);
+    @GetMapping("/{id}/medical-record")
+    public ResponseEntity<MedicalRecord> getPatientMedicalRecord(@PathVariable String id) {
+        MedicalRecord medicalRecord = patientService.getMedicalRecordForPatient(id);
         return ResponseEntity.ok(medicalRecord);
     }
 
     @PostMapping
-    Patient createPatient(@RequestBody Patient patient) {
+    public Patient createPatient(@RequestBody Patient patient) {
         return patientService.createPatient(patient);
     }
 }

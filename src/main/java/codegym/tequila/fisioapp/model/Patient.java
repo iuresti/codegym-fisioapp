@@ -2,7 +2,6 @@ package codegym.tequila.fisioapp.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,8 +13,6 @@ public class Patient {
 
     private String name;
 
-    @OneToOne(mappedBy = "patient")
-    private MedicalRecord medicalRecord;
 
     public String getName() {
         return name;
