@@ -1,5 +1,6 @@
 package codegym.tequila.fisioapp.dto;
 
+import java.util.Objects;
 import java.util.StringJoiner;
 
 public class UserDto {
@@ -77,5 +78,18 @@ public class UserDto {
                 .add("user='" + user + "'")
                 .add("email='" + email + "'")
                 .toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) && Objects.equals(name, userDto.name) && Objects.equals(lastName, userDto.lastName) && Objects.equals(avatar, userDto.avatar) && Objects.equals(user, userDto.user) && Objects.equals(email, userDto.email) && Objects.equals(password, userDto.password);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, avatar, user, email, password);
     }
 }
