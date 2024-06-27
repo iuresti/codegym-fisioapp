@@ -32,3 +32,10 @@ CREATE TABLE patient (
                           id varchar(40) PRIMARY KEY,
                           name varchar(40)
 );
+CREATE TABLE therapies
+(
+    id          varchar(40) primary key,
+    name        varchar(50),
+    description varchar(500),
+    active      boolean
+);
