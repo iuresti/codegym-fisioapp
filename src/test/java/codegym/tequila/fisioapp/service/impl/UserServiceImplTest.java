@@ -3,6 +3,7 @@ package codegym.tequila.fisioapp.service.impl;
 import codegym.tequila.fisioapp.dto.UserDto;
 import codegym.tequila.fisioapp.model.User;
 import codegym.tequila.fisioapp.repository.UserRepository;
+import codegym.tequila.fisioapp.service.EmailService;
 import org.junit.jupiter.api.Test;
 import org.mindrot.jbcrypt.BCrypt;
 import org.mockito.ArgumentCaptor;
@@ -24,7 +25,8 @@ class UserServiceImplTest {
     void createUserTest() {
         // Given:
         UserRepository userRepository = mock(UserRepository.class);
-        UserServiceImpl userService = new UserServiceImpl(userRepository);
+        EmailService emailService = mock(EmailService.class);
+        UserServiceImpl userService = new UserServiceImpl(userRepository, emailService);
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         UserDto userDto = new UserDto();
         User userDao = new User();
@@ -58,14 +60,15 @@ class UserServiceImplTest {
         assertThat(userDto).isEqualTo(userDtoReturned);
 
         verify(userRepository).save(savedUser);
-        verifyNoMoreInteractions(userRepository);
+        verify(emailService).sendSimpleEmail(savedUser.getEmail(), "User created", String.format("Tu usuario %s ha sido creado", savedUser.getUser()));
+        verifyNoMoreInteractions(userRepository, emailService);
     }
 
     @Test
     void updateUserTest() {
         // Given:
         UserRepository userRepository = mock(UserRepository.class);
-        UserServiceImpl userService = new UserServiceImpl(userRepository);
+        UserServiceImpl userService = new UserServiceImpl(userRepository, null);
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         UserDto userDto = new UserDto();
 
@@ -115,7 +118,7 @@ class UserServiceImplTest {
     void updateUserWithInvalidUserTest() {
         // Given:
         UserRepository userRepository = mock(UserRepository.class);
-        UserServiceImpl userService = new UserServiceImpl(userRepository);
+        UserServiceImpl userService = new UserServiceImpl(userRepository, null);
         UserDto userDto = new UserDto();
 
         userDto.setId(UUID.randomUUID().toString());
@@ -136,7 +139,7 @@ class UserServiceImplTest {
     void updateUserWithNoUpdatesTest() {
         // Given:
         UserRepository userRepository = mock(UserRepository.class);
-        UserServiceImpl userService = new UserServiceImpl(userRepository);
+        UserServiceImpl userService = new UserServiceImpl(userRepository, null);
         ArgumentCaptor<User> userArgumentCaptor = ArgumentCaptor.forClass(User.class);
         UserDto userDto = new UserDto();
         User userDao = new User();
@@ -176,7 +179,7 @@ class UserServiceImplTest {
         // Given:
         Pageable pageable = PageRequest.of(0, 10);
         UserRepository userRepository = mock(UserRepository.class);
-        UserServiceImpl userService = new UserServiceImpl(userRepository);
+        UserServiceImpl userService = new UserServiceImpl(userRepository, null);
         List<User> users = new ArrayList<>();
 
         users.add(createUser("1", "A1", "B1", "C1", "D1", "F1", "G1"));

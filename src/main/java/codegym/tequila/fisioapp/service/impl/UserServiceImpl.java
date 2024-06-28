@@ -3,6 +3,7 @@ package codegym.tequila.fisioapp.service.impl;
 import codegym.tequila.fisioapp.dto.UserDto;
 import codegym.tequila.fisioapp.model.User;
 import codegym.tequila.fisioapp.repository.UserRepository;
+import codegym.tequila.fisioapp.service.EmailService;
 import codegym.tequila.fisioapp.service.UserService;
 import io.micrometer.common.util.StringUtils;
 import org.mindrot.jbcrypt.BCrypt;
@@ -19,10 +20,12 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private EmailService emailService;
 
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     @Transactional
@@ -42,6 +45,9 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
 
         userDto.setId(user.getId());
+
+        emailService.sendSimpleEmail(user.getEmail(), "User created",
+                String.format("Tu usuario %s ha sido creado", user.getUser()));
 
         return userDto;
     }
