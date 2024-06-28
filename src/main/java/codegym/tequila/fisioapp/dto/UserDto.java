@@ -77,6 +77,7 @@ public class UserDto {
                 .add("avatar='" + avatar + "'")
                 .add("user='" + user + "'")
                 .add("email='" + email + "'")
+                .add("password='" + (password == null ? null : "has value") + "'")
                 .toString();
     }
 

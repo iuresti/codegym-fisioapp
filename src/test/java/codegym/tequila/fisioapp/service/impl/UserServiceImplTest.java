@@ -12,12 +12,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
 
 class UserServiceImplTest {
@@ -114,6 +112,27 @@ class UserServiceImplTest {
     }
 
     @Test
+    void updateUserWithInvalidUserTest() {
+        // Given:
+        UserRepository userRepository = mock(UserRepository.class);
+        UserServiceImpl userService = new UserServiceImpl(userRepository);
+        UserDto userDto = new UserDto();
+
+        userDto.setId(UUID.randomUUID().toString());
+
+        when(userRepository.findById(userDto.getId())).thenReturn(Optional.empty());
+
+        // When:
+        assertThatThrownBy(() -> userService.updateUser(userDto))
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessage("User " + userDto.getId() + " not found");
+
+        // Then:
+        verify(userRepository).findById(userDto.getId());
+        verifyNoMoreInteractions(userRepository);
+    }
+
+    @Test
     void updateUserWithNoUpdatesTest() {
         // Given:
         UserRepository userRepository = mock(UserRepository.class);
@@ -150,7 +169,6 @@ class UserServiceImplTest {
         verify(userRepository).save(savedUser);
         verifyNoMoreInteractions(userRepository);
     }
-
 
 
     @Test
