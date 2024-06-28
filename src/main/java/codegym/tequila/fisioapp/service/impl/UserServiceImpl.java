@@ -20,7 +20,7 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-    private EmailService emailService;
+    private final EmailService emailService;
 
 
     public UserServiceImpl(UserRepository userRepository, EmailService emailService) {
