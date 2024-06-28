@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -72,5 +74,18 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user1 = (User) o;
+        return Objects.equals(id, user1.id) && Objects.equals(name, user1.name) && Objects.equals(lastName, user1.lastName) && Objects.equals(avatar, user1.avatar) && Objects.equals(user, user1.user) && Objects.equals(password, user1.password) && Objects.equals(email, user1.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, lastName, avatar, user, password, email);
     }
 }
