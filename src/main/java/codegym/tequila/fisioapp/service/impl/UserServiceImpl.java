@@ -6,6 +6,7 @@ import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.UserService;
 import io.micrometer.common.util.StringUtils;
 import org.mindrot.jbcrypt.BCrypt;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -77,12 +78,8 @@ public class UserServiceImpl implements UserService {
     private static UserDto convertUserToDto(User user) {
         UserDto userDto = new UserDto();
 
-        userDto.setId(user.getId());
-        userDto.setAvatar(user.getAvatar());
-        userDto.setEmail(user.getEmail());
-        userDto.setUser(user.getUser());
-        userDto.setLastName(user.getLastName());
-        userDto.setName(user.getName());
+        BeanUtils.copyProperties(user, userDto);
+        userDto.setPassword(null);
 
         return userDto;
     }
