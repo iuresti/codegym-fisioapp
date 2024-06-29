@@ -38,3 +38,14 @@ CREATE TABLE therapies (
   description varchar(500),
   active boolean
 );
+
+CREATE TABLE therapist (
+id BIGINT AUTO_INCREMENT PRIMARY KEY,
+first_name VARCHAR(255) NOT NULL,
+last_name VARCHAR(255) NOT NULL,
+birth_date DATE NOT NULL,
+gender VARCHAR(10) NOT NULL,
+phone VARCHAR(20),
+address VARCHAR(255),
+specialties VARCHAR(255)
+);
