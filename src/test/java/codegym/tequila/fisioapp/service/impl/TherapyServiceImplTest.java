@@ -6,6 +6,10 @@ import codegym.tequila.fisioapp.repository.TherapyRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.*;
 
@@ -122,8 +126,6 @@ class TherapyServiceImplTest {
         assertThat(savedTherapy.getDescription()).isEqualTo(therapyDto.getDescription());
         assertThat(savedTherapy.isActive()).isEqualTo(therapyDao.isActive());
 
-
-
         therapyDto.setId(therapyDao.getId());
         assertThat(therapyDto).isEqualTo(therapyDtoReturned);
 
@@ -219,7 +221,6 @@ class TherapyServiceImplTest {
         assertThat(savedTherapy.getName()).isEqualTo(therapyDao.getName());
         assertThat(savedTherapy.getDescription()).isEqualTo(therapyDao.getDescription());
         assertThat(savedTherapy.isActive()).isFalse();
-
 
         verify(therapyRepository).findById(therapyDtoId);
         verify(therapyRepository).save(savedTherapy);
@@ -346,4 +347,123 @@ class TherapyServiceImplTest {
         verifyNoMoreInteractions(therapyRepository);
     }
 
+    @Test
+    void getTherapiesAllPageDefault_Test() {
+        //Given
+        TherapyRepository therapyRepository = mock(TherapyRepository.class);
+        TherapyServiceImpl therapyService = new TherapyServiceImpl(therapyRepository);
+
+        int pageIndex = 0;
+        int pageSize = 10;
+        boolean all = true;
+        boolean inactive = false;
+
+        Pageable pageable = PageRequest.of(pageIndex, pageSize);
+
+        List<Therapy> therapiesList = new ArrayList<>();
+        therapiesList.add(createTherapy("1", "A", "AA", true));
+        therapiesList.add(createTherapy("2", "B", "BB", true));
+        therapiesList.add(createTherapy("3", "C", "CC", false));
+        therapiesList.add(createTherapy("4", "D", "DD", false));
+
+        Page<Therapy> therapiesPage = new PageImpl<>(therapiesList, pageable, therapyRepository.count());
+
+        when(therapyRepository.findAll(pageable)).thenReturn(therapiesPage);
+
+        //When
+        List<TherapyDto> therapyDtoListReturned = therapyService.getTherapies(pageSize, pageIndex, all, inactive);
+
+        //Then
+        assertThat(therapyDtoListReturned).containsExactly(
+                createTherapyDto("1", "A", "AA"),
+                createTherapyDto("2", "B", "BB"),
+                createTherapyDto("3", "C", "CC"),
+                createTherapyDto("4", "D", "DD")
+        );
+    }
+
+    @Test
+    void getTherapiesInactivePageDefault_Test() {
+        //Given
+        TherapyRepository therapyRepository = mock(TherapyRepository.class);
+        TherapyServiceImpl therapyService = new TherapyServiceImpl(therapyRepository);
+
+        int pageIndex = 0;
+        int pageSize = 10;
+        boolean all = false;
+        boolean inactive = true;
+
+        Pageable pageable = PageRequest.of(pageIndex, pageSize);
+
+        List<Therapy> therapiesList = new ArrayList<>();
+        therapiesList.add(createTherapy("3", "C", "CC", false));
+        therapiesList.add(createTherapy("4", "D", "DD", false));
+
+        when(therapyRepository.findAllByActive(false, pageable)).thenReturn(therapiesList);
+
+        //When
+        List<TherapyDto> therapyDtoListReturned = therapyService.getTherapies(pageSize, pageIndex, all, inactive);
+
+        //Then
+        assertThat(therapyDtoListReturned).containsExactly(
+                createTherapyDto("3", "C", "CC"),
+                createTherapyDto("4", "D", "DD")
+        );
+    }
+
+
+    private static TherapyDto createTherapyDto(String id, String name, String description) {
+        TherapyDto therapyDto = new TherapyDto();
+
+        therapyDto.setId(id);
+
+        therapyDto.setName(name);
+
+        therapyDto.setDescription(description);
+
+        return therapyDto;
+    }
+
+    private static Therapy createTherapy(String id, String name, String description, boolean active) {
+        Therapy therapy = new Therapy();
+
+        therapy.setId(id);
+
+        therapy.setName(name);
+
+        therapy.setDescription(description);
+
+        therapy.setActive(active);
+
+        return therapy;
+    }
+
+    @Test
+    void getTherapiesActivePageDefault_Test() {
+        //Given
+        TherapyRepository therapyRepository = mock(TherapyRepository.class);
+        TherapyServiceImpl therapyService = new TherapyServiceImpl(therapyRepository);
+
+        int pageIndex = 0;
+        int pageSize = 10;
+        boolean all = false;
+        boolean inactive = false;
+
+        Pageable pageable = PageRequest.of(pageIndex, pageSize);
+
+        List<Therapy> therapiesList = new ArrayList<>();
+        therapiesList.add(createTherapy("1", "A", "AA", true));
+        therapiesList.add(createTherapy("2", "B", "BB", true));
+
+        when(therapyRepository.findAllByActive(true, pageable)).thenReturn(therapiesList);
+
+        //When
+        List<TherapyDto> therapyDtoListReturned = therapyService.getTherapies(pageSize, pageIndex, all, inactive);
+
+        //Then
+        assertThat(therapyDtoListReturned).containsExactly(
+                createTherapyDto("1", "A", "AA"),
+                createTherapyDto("2", "B", "BB")
+        );
+    }
 }
