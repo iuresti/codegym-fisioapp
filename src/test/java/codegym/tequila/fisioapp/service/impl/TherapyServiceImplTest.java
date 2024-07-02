@@ -411,33 +411,6 @@ class TherapyServiceImplTest {
         );
     }
 
-
-    private static TherapyDto createTherapyDto(String id, String name, String description) {
-        TherapyDto therapyDto = new TherapyDto();
-
-        therapyDto.setId(id);
-
-        therapyDto.setName(name);
-
-        therapyDto.setDescription(description);
-
-        return therapyDto;
-    }
-
-    private static Therapy createTherapy(String id, String name, String description, boolean active) {
-        Therapy therapy = new Therapy();
-
-        therapy.setId(id);
-
-        therapy.setName(name);
-
-        therapy.setDescription(description);
-
-        therapy.setActive(active);
-
-        return therapy;
-    }
-
     @Test
     void getTherapiesActivePageDefault_Test() {
         //Given
@@ -465,5 +438,31 @@ class TherapyServiceImplTest {
                 createTherapyDto("1", "A", "AA"),
                 createTherapyDto("2", "B", "BB")
         );
+    }
+
+    private static TherapyDto createTherapyDto(String id, String name, String description) {
+        TherapyDto therapyDto = new TherapyDto();
+
+        therapyDto.setId(id);
+
+        therapyDto.setName(name);
+
+        therapyDto.setDescription(description);
+
+        return therapyDto;
+    }
+
+    private static Therapy createTherapy(String id, String name, String description, boolean active) {
+        Therapy therapy = new Therapy();
+
+        therapy.setId(id);
+
+        therapy.setName(name);
+
+        therapy.setDescription(description);
+
+        therapy.setActive(active);
+
+        return therapy;
     }
 }

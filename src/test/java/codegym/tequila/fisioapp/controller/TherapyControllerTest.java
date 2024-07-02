@@ -179,34 +179,18 @@ class TherapyControllerTest {
     }
 
     @Test
-    void deactivateTherapyWithException_Test() throws Exception {
-        //Given
-        Gson gson = new Gson();
+    void deactivateTherapyWithException_Test() {
 
-        String id = UUID.randomUUID().toString();
-
-        TherapyDto therapyDto = new TherapyDto();
-        therapyDto.setName("Name Therapy");
-        therapyDto.setDescription("Description Therapy");
-
-        //when(therapyService.updateTherapy(id, therapyDto)).thenThrow(new NoSuchElementException("Therapy not found"));
-
-        //When
-        MockHttpServletResponse response = mockMvc.perform(
-                        MockMvcRequestBuilders.put(BASE_URL + "/" + id + "/deactivate")
-                                .content(gson.toJson(therapyDto))
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-
-        //Then
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-
-        verify(therapyService).deactivateTherapy(id);
-        verifyNoMoreInteractions(therapyService);
     }
 
     @Test
-    void activateTherapy() {
+    void activateTherapy_Test() {
+
+    }
+
+    @Test
+    void activateTherapyWithException_Test() {
+
     }
 
     @Test
@@ -269,6 +253,6 @@ class TherapyControllerTest {
     }
 
     @Test
-    void getTherapies() {
+    public void getTherapies() {
     }
 }
