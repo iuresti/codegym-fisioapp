@@ -7,8 +7,7 @@ import java.time.LocalDate;
 @Table(name = "therapists")
 public class Therapist {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     @Column(name = "first_name")
     private String firstname;
     @Column(name = "last_name")
@@ -20,11 +19,11 @@ public class Therapist {
     private String address;
     private String specialties;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,10 +1,9 @@
 package codegym.tequila.fisioapp.dto;
-
 import java.time.LocalDate;
-import java.util.Date;
+
 
 public class TherapistDto {
-    private Long id;
+    private String id;
     private String firstname;
     private String lastName;
     private LocalDate birthDate;
@@ -13,11 +12,11 @@ public class TherapistDto {
     private String address;
     private String specialties;
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -75,5 +74,19 @@ public class TherapistDto {
 
     public void setSpecialties(String specialties) {
         this.specialties = specialties;
+    }
+
+    @Override
+    public String toString() {
+        return "TherapistDto{" +
+                "id='" + id + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", gender='" + gender + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", specialties='" + specialties + '\'' +
+                '}';
     }
 }

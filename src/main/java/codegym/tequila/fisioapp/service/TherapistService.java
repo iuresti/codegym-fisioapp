@@ -1,13 +1,20 @@
 package codegym.tequila.fisioapp.service;
 
 import codegym.tequila.fisioapp.dto.TherapistDto;
-import codegym.tequila.fisioapp.dto.UserDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+
 
 public interface TherapistService {
 
     TherapistDto createTherapist(TherapistDto therapistDto);
 
-    List<TherapistDto> getTherapists();
+    Page<TherapistDto> getTherapists(Pageable pageable);
+
+    TherapistDto getTherapistById(String id);
+
+    TherapistDto updateTherapist(TherapistDto therapistDto);
+
+    TherapistDto deleteTherapist(String id);
 }
