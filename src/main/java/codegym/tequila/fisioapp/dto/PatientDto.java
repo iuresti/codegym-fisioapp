@@ -1,6 +1,5 @@
 package codegym.tequila.fisioapp.dto;
 
-import jakarta.persistence.Id;
 
 import java.util.Objects;
 

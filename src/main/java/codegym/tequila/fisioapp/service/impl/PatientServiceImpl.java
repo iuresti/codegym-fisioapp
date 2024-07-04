@@ -10,6 +10,7 @@ import codegym.tequila.fisioapp.service.PatientService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -26,9 +27,9 @@ public class PatientServiceImpl implements PatientService {
 
     public MedicalRecordDto getMedicalRecordForPatient(String patientId) {
 
-        Patient patientExists = patientRepository.findById(patientId).orElseThrow();
+        Patient patientExists = patientRepository.findById(patientId).orElseThrow(() -> new NoSuchElementException("Patient " + patientId + " not found"));
 
-        return convertMedicalRecordToDto(medicalRecordRepository.findByPatientId(patientId).orElseThrow());
+        return convertMedicalRecordToDto(medicalRecordRepository.findByPatientId(patientId).orElseThrow(() -> new NoSuchElementException("Medical Record for Patient " + patientId + " not found")));
     }
 
     @Override
@@ -45,13 +46,6 @@ public class PatientServiceImpl implements PatientService {
         return patientDto;
     }
 
-    private static PatientDto convertPatientToDto (Patient patient){
-        PatientDto patientDto = new PatientDto();
-
-        BeanUtils.copyProperties(patient, patientDto);
-
-        return patientDto;
-    }
     private static MedicalRecordDto convertMedicalRecordToDto(MedicalRecord medicalRecord) {
         MedicalRecordDto medicalRecordDto = new MedicalRecordDto();
 

@@ -1,7 +1,6 @@
 package codegym.tequila.fisioapp.controller;
 
 import codegym.tequila.fisioapp.dto.MedicalRecordDto;
-import codegym.tequila.fisioapp.model.MedicalRecord;
 import codegym.tequila.fisioapp.service.MedicalRecordService;
 import codegym.tequila.fisioapp.service.impl.MedicalRecordServiceImpl;
 import org.springframework.http.HttpStatus;

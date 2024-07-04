@@ -2,8 +2,6 @@ package codegym.tequila.fisioapp.controller;
 
 import codegym.tequila.fisioapp.dto.MedicalRecordDto;
 import codegym.tequila.fisioapp.dto.PatientDto;
-import codegym.tequila.fisioapp.model.MedicalRecord;
-import codegym.tequila.fisioapp.model.Patient;
 import codegym.tequila.fisioapp.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
