@@ -1,27 +1,19 @@
-package codegym.tequila.fisioapp.model;
+package codegym.tequila.fisioapp.dto;
 
-import jakarta.persistence.*;
+import codegym.tequila.fisioapp.model.FamiliarRecords;
+import codegym.tequila.fisioapp.model.Patient;
+import codegym.tequila.fisioapp.model.PersonalRecords;
+import codegym.tequila.fisioapp.model.PhysicalExploration;
 
 import java.util.Objects;
 
-@Entity
-@Table(name = "medical_record")
-public class MedicalRecord {
 
-    @Id
+public class MedicalRecordDto {
+
     private String id;
-
-    @OneToOne
-    @JoinColumn(name = "patient_id")
     private Patient patient;
-
-    @Embedded
     private PhysicalExploration physicalExploration;
-
-    @Embedded
     private PersonalRecords personalRecords;
-
-    @Embedded
     private FamiliarRecords familiarRecords;
 
     public String getId() {
@@ -65,10 +57,21 @@ public class MedicalRecord {
     }
 
     @Override
+    public String toString() {
+        return "MedicalRecordDto{" +
+                "id='" + id + '\'' +
+                ", patient=" + patient +
+                ", physicalExploration=" + physicalExploration +
+                ", personalRecords=" + personalRecords +
+                ", familiarRecords=" + familiarRecords +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MedicalRecord that = (MedicalRecord) o;
+        MedicalRecordDto that = (MedicalRecordDto) o;
         return Objects.equals(id, that.id) && Objects.equals(patient, that.patient) && Objects.equals(physicalExploration, that.physicalExploration) && Objects.equals(personalRecords, that.personalRecords) && Objects.equals(familiarRecords, that.familiarRecords);
     }
 

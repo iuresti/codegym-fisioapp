@@ -1,11 +1,14 @@
 package codegym.tequila.fisioapp.service.impl;
 
+import codegym.tequila.fisioapp.dto.MedicalRecordDto;
 import codegym.tequila.fisioapp.model.*;
 import codegym.tequila.fisioapp.repository.MedicalRecordRepository;
 import codegym.tequila.fisioapp.service.MedicalRecordService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -18,17 +21,28 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public MedicalRecord createMedicalRecord(MedicalRecord medicalRecord) {
+    public MedicalRecordDto createMedicalRecord(MedicalRecordDto medicalRecordDto) {
+        MedicalRecord medicalRecord = new MedicalRecord();
+
         medicalRecord.setId(UUID.randomUUID().toString());
-        return medicalRecordRepository.save(medicalRecord);
+        medicalRecord.setPatient(medicalRecordDto.getPatient());
+        medicalRecord.setPhysicalExploration(medicalRecordDto.getPhysicalExploration());
+        medicalRecord.setPersonalRecords(medicalRecordDto.getPersonalRecords());
+        medicalRecord.setFamiliarRecords(medicalRecordDto.getFamiliarRecords());
+
+        medicalRecordRepository.save(medicalRecord);
+
+        medicalRecordDto.setId(medicalRecord.getId());
+
+        return medicalRecordDto;
     }
 
     @Override
-    public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
-        MedicalRecord medicalRecordUsage = medicalRecordRepository.findById(medicalRecord.getId()).orElseThrow();
+    public MedicalRecordDto updateMedicalRecord(MedicalRecordDto medicalRecordDto) {
+        MedicalRecord medicalRecordUsage = medicalRecordRepository.findById(medicalRecordDto.getId()).orElseThrow(() -> new NoSuchElementException("Medical Record " + medicalRecordDto.getId() + " not found"));
 
         PersonalRecords usagePersonalRecords = medicalRecordUsage.getPersonalRecords();
-        PersonalRecords updatePersonalRecords = medicalRecord.getPersonalRecords();
+        PersonalRecords updatePersonalRecords = medicalRecordDto.getPersonalRecords();
 
         if (updatePersonalRecords != null) {
             if (StringUtils.hasText(updatePersonalRecords.getChronicDiseases())) {
@@ -59,7 +73,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
 
         PhysicalExploration usagePhysicalExploration = medicalRecordUsage.getPhysicalExploration();
-        PhysicalExploration updatePhysicalExploration = medicalRecord.getPhysicalExploration();
+        PhysicalExploration updatePhysicalExploration = medicalRecordDto.getPhysicalExploration();
 
         if (updatePhysicalExploration != null) {
             if (updatePhysicalExploration.getWeight() != null) {
@@ -78,7 +92,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
 
         FamiliarRecords usageFamiliarRecords = medicalRecordUsage.getFamiliarRecords();
-        FamiliarRecords updateFamiliarRecords = medicalRecord.getFamiliarRecords();
+        FamiliarRecords updateFamiliarRecords = medicalRecordDto.getFamiliarRecords();
 
         if (updateFamiliarRecords != null) {
             if (StringUtils.hasText(usageFamiliarRecords.getHereditaryDiseases())) {
@@ -90,16 +104,19 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
             medicalRecordUsage.setFamiliarRecords(usageFamiliarRecords);
         }
 
-        return medicalRecordRepository.save(medicalRecordUsage);
+        return convertMedicalRecordToDto(medicalRecordRepository.save(medicalRecordUsage));
     }
 
     @Override
-    public MedicalRecord findById(String id) {
-        return medicalRecordRepository.findById(id).orElseThrow();
+    public MedicalRecordDto findById(String id) {
+        return convertMedicalRecordToDto(medicalRecordRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Medical Record " + id + " not found")));
     }
 
-    @Override
-    public MedicalRecord findByPatientId(String id) {
-        return medicalRecordRepository.findByPatientId(id).orElseThrow();
+    private static MedicalRecordDto convertMedicalRecordToDto(MedicalRecord medicalRecord) {
+        MedicalRecordDto medicalRecordDto = new MedicalRecordDto();
+
+        BeanUtils.copyProperties(medicalRecord, medicalRecordDto);
+
+        return medicalRecordDto;
     }
 }

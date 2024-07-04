@@ -1,13 +1,13 @@
 package codegym.tequila.fisioapp.service;
 
-import codegym.tequila.fisioapp.model.MedicalRecord;
-import codegym.tequila.fisioapp.model.Patient;
+import codegym.tequila.fisioapp.dto.MedicalRecordDto;
+import codegym.tequila.fisioapp.dto.PatientDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface PatientService {
 
-    MedicalRecord getMedicalRecordForPatient(String patientId);
+    MedicalRecordDto getMedicalRecordForPatient(String patientId);
 
-    Patient createPatient (Patient patient);
+    PatientDto createPatient (PatientDto patientDto);
 }

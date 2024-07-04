@@ -1,14 +1,13 @@
 package codegym.tequila.fisioapp.service;
 
+import codegym.tequila.fisioapp.dto.MedicalRecordDto;
 import codegym.tequila.fisioapp.model.MedicalRecord;
 
 
 public interface MedicalRecordService {
-    MedicalRecord createMedicalRecord(MedicalRecord medicalRecord);
+    MedicalRecordDto createMedicalRecord(MedicalRecordDto medicalRecordDto);
 
-    MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord);
+    MedicalRecordDto updateMedicalRecord(MedicalRecordDto medicalRecordDto);
 
-    MedicalRecord findById(String id);
-
-    MedicalRecord findByPatientId(String id);
+    MedicalRecordDto findById(String id);
 }
