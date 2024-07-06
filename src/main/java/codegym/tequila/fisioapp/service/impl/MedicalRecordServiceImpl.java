@@ -112,7 +112,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         return convertMedicalRecordToDto(medicalRecordRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Medical Record " + id + " not found")));
     }
 
-    private static MedicalRecordDto convertMedicalRecordToDto(MedicalRecord medicalRecord) {
+    static MedicalRecordDto convertMedicalRecordToDto(MedicalRecord medicalRecord) {
         MedicalRecordDto medicalRecordDto = new MedicalRecordDto();
         medicalRecordDto.setId(medicalRecord.getId());
         medicalRecordDto.setPatient(convertPatientToDto(medicalRecord.getPatient()));

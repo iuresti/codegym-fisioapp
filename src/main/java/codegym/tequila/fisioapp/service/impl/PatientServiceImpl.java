@@ -1,13 +1,10 @@
 package codegym.tequila.fisioapp.service.impl;
 
-import codegym.tequila.fisioapp.dto.MedicalRecordDto;
-import codegym.tequila.fisioapp.dto.PatientDto;
-import codegym.tequila.fisioapp.model.MedicalRecord;
-import codegym.tequila.fisioapp.model.Patient;
+import codegym.tequila.fisioapp.dto.*;
+import codegym.tequila.fisioapp.model.*;
 import codegym.tequila.fisioapp.repository.MedicalRecordRepository;
 import codegym.tequila.fisioapp.repository.PatientRepository;
 import codegym.tequila.fisioapp.service.PatientService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -29,7 +26,7 @@ public class PatientServiceImpl implements PatientService {
 
         patientRepository.findById(patientId).orElseThrow(() -> new NoSuchElementException("Patient " + patientId + " not found"));
 
-        return convertMedicalRecordToDto(medicalRecordRepository.findByPatientId(patientId).orElseThrow(() -> new NoSuchElementException("Medical Record for Patient " + patientId + " not found")));
+        return MedicalRecordServiceImpl.convertMedicalRecordToDto(medicalRecordRepository.findByPatientId(patientId).orElseThrow(() -> new NoSuchElementException("Medical Record for Patient " + patientId + " not found")));
     }
 
     @Override
@@ -46,11 +43,4 @@ public class PatientServiceImpl implements PatientService {
         return patientDto;
     }
 
-    private static MedicalRecordDto convertMedicalRecordToDto(MedicalRecord medicalRecord) {
-        MedicalRecordDto medicalRecordDto = new MedicalRecordDto();
-
-        BeanUtils.copyProperties(medicalRecord, medicalRecordDto);
-
-        return medicalRecordDto;
-    }
 }

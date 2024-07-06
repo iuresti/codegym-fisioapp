@@ -24,7 +24,7 @@ public class MedicalRecordServiceImplTest {
     private static MedicalRecordDto medicalRecordDto;
 
     @BeforeAll
-    public static void setup() {
+    public static void beforeAllSetup() {
         medicalRecordRepository = mock(MedicalRecordRepository.class);
         medicalRecordService = new MedicalRecordServiceImpl(medicalRecordRepository);
         medicalRecordDto = new MedicalRecordDto();
@@ -60,7 +60,7 @@ public class MedicalRecordServiceImplTest {
     }
 
     @BeforeEach
-    public void init() {
+    public void beforeEachSetup() {
         medicalRecordDto.setId(null);
     }
 
@@ -75,7 +75,7 @@ public class MedicalRecordServiceImplTest {
 
         when(medicalRecordRepository.save(medicalRecordArgumentCaptor.capture())).thenReturn(medicalRecordDao);
 
-        //Wheh:
+        //When:
         MedicalRecordDto medicalRecordDtoReturned = medicalRecordService.createMedicalRecord(medicalRecordDto);
 
         //Then:
@@ -149,7 +149,7 @@ public class MedicalRecordServiceImplTest {
         when(medicalRecordRepository.findById(medicalRecordDto.getId())).thenReturn(Optional.of(medicalRecordDao));
         when(medicalRecordRepository.save(medicalRecordArgumentCaptor.capture())).thenReturn(medicalRecordDao);
 
-        //Wheh:
+        //When:
         MedicalRecordDto medicalRecordDtoReturned = medicalRecordService.updateMedicalRecord(medicalRecordDto);
 
         //Then:

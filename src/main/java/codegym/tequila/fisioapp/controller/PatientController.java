@@ -18,8 +18,7 @@ public class PatientController {
 
     @GetMapping("/{id}/medical-record")
     public ResponseEntity<MedicalRecordDto> getPatientMedicalRecord(@PathVariable String id) {
-        MedicalRecordDto medicalRecordDto = patientService.getMedicalRecordForPatient(id);
-        return ResponseEntity.ok(medicalRecordDto);
+        return ResponseEntity.ok(patientService.getMedicalRecordForPatient(id));
     }
 
     @PostMapping
