@@ -1,9 +1,5 @@
 package codegym.tequila.fisioapp.dto;
 
-import codegym.tequila.fisioapp.model.FamiliarRecords;
-import codegym.tequila.fisioapp.model.Patient;
-import codegym.tequila.fisioapp.model.PersonalRecords;
-import codegym.tequila.fisioapp.model.PhysicalExploration;
 
 import java.util.Objects;
 

@@ -185,8 +185,7 @@ public class MedicalRecordServiceImplTest {
     @Test
     public void updateMedicalRecordWithInvalidIdTest() {
         //Given:
-        MedicalRecord medicalRecordDao = new MedicalRecord();
-        medicalRecordDao.setId(UUID.randomUUID().toString());
+        medicalRecordDto.setId(UUID.randomUUID().toString());
 
         when(medicalRecordRepository.findById(medicalRecordDto.getId())).thenReturn(Optional.empty());
 
