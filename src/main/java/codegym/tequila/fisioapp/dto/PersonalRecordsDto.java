@@ -1,33 +1,27 @@
-package codegym.tequila.fisioapp.model;
-
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+package codegym.tequila.fisioapp.dto;
 
 import java.util.Objects;
 
-@Embeddable
-public class PersonalRecords {
+public class PersonalRecordsDto {
 
-    @Column(name = "chronic_diseases")
     private String chronicDiseases;
-    @Column(name = "previous_surgeries_and_hospitalizations")
+
     private String previousSurgeriesAndHospitalizations;
 
     private String medicines;
 
     private String allergies;
 
-    @Column(name = "neurological_conditions")
+
     private String neurologicalConditions;
 
-    @Column(name = "cardiovascular_conditions")
+
     private String cardiovascularConditions;
 
-    @Column(name = "respiratory_conditions")
+
     private String respiratoryConditions;
 
-    @Column(name = "musculoskeletal_conditions")
+
     private String musculoskeletalConditions;
 
     public String getChronicDiseases() {
@@ -95,10 +89,24 @@ public class PersonalRecords {
     }
 
     @Override
+    public String toString() {
+        return "PersonalRecordsDto{" +
+                "chronicDiseases='" + chronicDiseases + '\'' +
+                ", previousSurgeriesAndHospitalizations='" + previousSurgeriesAndHospitalizations + '\'' +
+                ", medicines='" + medicines + '\'' +
+                ", allergies='" + allergies + '\'' +
+                ", neurologicalConditions='" + neurologicalConditions + '\'' +
+                ", cardiovascularConditions='" + cardiovascularConditions + '\'' +
+                ", respiratoryConditions='" + respiratoryConditions + '\'' +
+                ", musculoskeletalConditions='" + musculoskeletalConditions + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PersonalRecords that = (PersonalRecords) o;
+        PersonalRecordsDto that = (PersonalRecordsDto) o;
         return Objects.equals(chronicDiseases, that.chronicDiseases) && Objects.equals(previousSurgeriesAndHospitalizations, that.previousSurgeriesAndHospitalizations) && Objects.equals(medicines, that.medicines) && Objects.equals(allergies, that.allergies) && Objects.equals(neurologicalConditions, that.neurologicalConditions) && Objects.equals(cardiovascularConditions, that.cardiovascularConditions) && Objects.equals(respiratoryConditions, that.respiratoryConditions) && Objects.equals(musculoskeletalConditions, that.musculoskeletalConditions);
     }
 
@@ -107,5 +115,3 @@ public class PersonalRecords {
         return Objects.hash(chronicDiseases, previousSurgeriesAndHospitalizations, medicines, allergies, neurologicalConditions, cardiovascularConditions, respiratoryConditions, musculoskeletalConditions);
     }
 }
-
-

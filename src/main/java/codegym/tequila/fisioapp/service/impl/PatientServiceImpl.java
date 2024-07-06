@@ -27,7 +27,7 @@ public class PatientServiceImpl implements PatientService {
 
     public MedicalRecordDto getMedicalRecordForPatient(String patientId) {
 
-        Patient patientExists = patientRepository.findById(patientId).orElseThrow(() -> new NoSuchElementException("Patient " + patientId + " not found"));
+        patientRepository.findById(patientId).orElseThrow(() -> new NoSuchElementException("Patient " + patientId + " not found"));
 
         return convertMedicalRecordToDto(medicalRecordRepository.findByPatientId(patientId).orElseThrow(() -> new NoSuchElementException("Medical Record for Patient " + patientId + " not found")));
     }

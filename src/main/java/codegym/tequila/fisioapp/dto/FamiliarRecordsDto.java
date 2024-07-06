@@ -1,15 +1,12 @@
-package codegym.tequila.fisioapp.model;
+package codegym.tequila.fisioapp.dto;
 
-import jakarta.persistence.*;
 
 import java.util.Objects;
 
-@Embeddable
-public class FamiliarRecords {
+public class FamiliarRecordsDto {
 
-    @Column(name = "hereditary_diseases")
     private String hereditaryDiseases;
-    @Column(name = "genetical_predispositions")
+
     private String geneticalPredispositions;
 
     public String getHereditaryDiseases() {
@@ -29,10 +26,18 @@ public class FamiliarRecords {
     }
 
     @Override
+    public String toString() {
+        return "FamiliarRecordsDto{" +
+                "hereditaryDiseases='" + hereditaryDiseases + '\'' +
+                ", geneticalPredispositions='" + geneticalPredispositions + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        FamiliarRecords that = (FamiliarRecords) o;
+        FamiliarRecordsDto that = (FamiliarRecordsDto) o;
         return Objects.equals(hereditaryDiseases, that.hereditaryDiseases) && Objects.equals(geneticalPredispositions, that.geneticalPredispositions);
     }
 

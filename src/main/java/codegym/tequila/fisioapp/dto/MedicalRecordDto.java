@@ -11,10 +11,10 @@ import java.util.Objects;
 public class MedicalRecordDto {
 
     private String id;
-    private Patient patient;
-    private PhysicalExploration physicalExploration;
-    private PersonalRecords personalRecords;
-    private FamiliarRecords familiarRecords;
+    private PatientDto patient;
+    private PhysicalExplorationDto physicalExploration;
+    private PersonalRecordsDto personalRecords;
+    private FamiliarRecordsDto familiarRecords;
 
     public String getId() {
         return id;
@@ -24,35 +24,35 @@ public class MedicalRecordDto {
         this.id = id;
     }
 
-    public Patient getPatient() {
+    public PatientDto getPatient() {
         return patient;
     }
 
-    public void setPatient(Patient patient) {
+    public void setPatient(PatientDto patient) {
         this.patient = patient;
     }
 
-    public PhysicalExploration getPhysicalExploration() {
+    public PhysicalExplorationDto getPhysicalExploration() {
         return physicalExploration;
     }
 
-    public void setPhysicalExploration(PhysicalExploration physicalExploration) {
+    public void setPhysicalExploration(PhysicalExplorationDto physicalExploration) {
         this.physicalExploration = physicalExploration;
     }
 
-    public PersonalRecords getPersonalRecords() {
+    public PersonalRecordsDto getPersonalRecords() {
         return personalRecords;
     }
 
-    public void setPersonalRecords(PersonalRecords personalRecords) {
+    public void setPersonalRecords(PersonalRecordsDto personalRecords) {
         this.personalRecords = personalRecords;
     }
 
-    public FamiliarRecords getFamiliarRecords() {
+    public FamiliarRecordsDto getFamiliarRecords() {
         return familiarRecords;
     }
 
-    public void setFamiliarRecords(FamiliarRecords familiarRecords) {
+    public void setFamiliarRecords(FamiliarRecordsDto familiarRecords) {
         this.familiarRecords = familiarRecords;
     }
 
