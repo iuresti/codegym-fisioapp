@@ -147,35 +147,38 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     static Patient convertPatientDtoToPatient(PatientDto patientDto) {
-        if (patientDto != null) {
+        if (patientDto == null) {
+            return null;
+        }
             Patient patient = new Patient();
             BeanUtils.copyProperties(patientDto, patient);
             return patient;
-        } else return null;
-
     }
 
     static FamiliarRecords convertFamiliarRecordsDtoToFamiliarRecords(FamiliarRecordsDto familiarRecordsDto) {
-        if (familiarRecordsDto != null) {
+        if (familiarRecordsDto == null) {
+            return null;
+        }
             FamiliarRecords familiarRecords = new FamiliarRecords();
             BeanUtils.copyProperties(familiarRecordsDto, familiarRecords);
             return familiarRecords;
-        } else return null;
     }
 
     static PersonalRecords convertPersonalRecordsDtoToPersonalRecords(PersonalRecordsDto personalRecordsDto) {
-        if (personalRecordsDto != null) {
+        if (personalRecordsDto == null) {
+            return null;
+        }
             PersonalRecords personalRecords = new PersonalRecords();
             BeanUtils.copyProperties(personalRecordsDto, personalRecords);
             return personalRecords;
-        } else return null;
     }
 
     static PhysicalExploration convertPhysicalExplorationDtoToPhysicalExploration(PhysicalExplorationDto physicalExplorationDto) {
-        if (physicalExplorationDto != null) {
+        if (physicalExplorationDto == null) {
+            return null;
+        }
             PhysicalExploration physicalExploration = new PhysicalExploration();
             BeanUtils.copyProperties(physicalExplorationDto, physicalExploration);
             return physicalExploration;
-        } else return null;
     }
 }

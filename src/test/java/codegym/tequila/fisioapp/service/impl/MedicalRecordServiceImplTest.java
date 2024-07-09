@@ -220,10 +220,7 @@ public class MedicalRecordServiceImplTest {
         //Then:
         assertThat(medicalRecordDtoResult).isNotNull();
         assertThat(medicalRecordDtoResult.getId()).isEqualTo(id);
-        assertThat(medicalRecordDtoResult.getPhysicalExploration()).isEqualTo(medicalRecordDto.getPhysicalExploration());
-        assertThat(medicalRecordDtoResult.getPatient()).isEqualTo(medicalRecordDto.getPatient());
-        assertThat(medicalRecordDtoResult.getPersonalRecords()).isEqualTo(medicalRecordDto.getPersonalRecords());
-        assertThat(medicalRecordDtoResult.getFamiliarRecords()).isEqualTo(medicalRecordDto.getFamiliarRecords());
+        assertThat(medicalRecordDtoResult).isEqualTo(MedicalRecordServiceImpl.convertMedicalRecordToDto(medicalRecordDao));
 
         verify(medicalRecordRepository).findById(id);
         verifyNoMoreInteractions(medicalRecordRepository);
