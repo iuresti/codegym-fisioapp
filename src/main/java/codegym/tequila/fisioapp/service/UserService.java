@@ -10,4 +10,6 @@ public interface UserService {
     Page<UserDto> getUsers(Pageable pageable);
 
     UserDto updateUser(UserDto userDto);
+
+    void validateUserExist(String user, String password);
 }

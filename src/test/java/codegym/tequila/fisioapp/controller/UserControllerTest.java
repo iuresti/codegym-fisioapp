@@ -1,9 +1,11 @@
 package codegym.tequila.fisioapp.controller;
 
 import codegym.tequila.fisioapp.dto.UserDto;
+import codegym.tequila.fisioapp.exception.UserNotFoundException;
 import codegym.tequila.fisioapp.service.UserService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,6 +35,61 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
+    @Test
+    public void createUserTestWithNoHeaderAuth() throws Exception {
+        // Given:
+        Gson gson = new Gson();
+        UserDto userDto = new UserDto();
+
+        userDto.setUser("user");
+        userDto.setPassword("password");
+        userDto.setAvatar("url");
+        userDto.setName("name");
+        userDto.setLastName("lastName");
+
+        // When:
+        MockHttpServletResponse response = mockMvc.perform(
+                        MockMvcRequestBuilders.post(BASE_URL)
+                                .content(gson.toJson(userDto))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // Then:
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+
+        verifyNoInteractions(userService);
+    }
+
+    @Test
+    public void createUserTestWithInvalidUser() throws Exception {
+        // Given:
+        Gson gson = new Gson();
+        UserDto userDto = new UserDto();
+
+        userDto.setUser("user");
+        userDto.setPassword("password");
+        userDto.setAvatar("url");
+        userDto.setName("name");
+        userDto.setLastName("lastName");
+
+        Mockito.doThrow(new UserNotFoundException("El usuario no existe"))
+                .when(userService).validateUserExist("user", "pwd");
+
+        // When:
+        MockHttpServletResponse response = mockMvc.perform(
+                        MockMvcRequestBuilders.post(BASE_URL)
+                                .header("Authorization", "Basic dXNlcjpwd2Q")
+                                .content(gson.toJson(userDto))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
+
+        // Then:
+        assertThat(response.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+
+        verify(userService).validateUserExist("user", "pwd");
+        verifyNoMoreInteractions(userService);
+    }
+
 
     @Test
     public void createUserTest() throws Exception {
@@ -55,6 +112,7 @@ class UserControllerTest {
         // When:
         MockHttpServletResponse response = mockMvc.perform(
                         MockMvcRequestBuilders.post(BASE_URL)
+                                .header("Authorization", "Basic dXNlcjpwd2Q")
                                 .content(gson.toJson(userDto))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
@@ -65,6 +123,7 @@ class UserControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
         assertThat(userDtoWithId).isEqualTo(receivedUser);
 
+        verify(userService).validateUserExist("user", "pwd");
         verify(userService).createUser(userDto);
         verifyNoMoreInteractions(userService);
     }
@@ -102,7 +161,8 @@ class UserControllerTest {
 
         // When:
         MockHttpServletResponse response = mockMvc.perform(
-                        MockMvcRequestBuilders.get(BASE_URL))
+                        MockMvcRequestBuilders.get(BASE_URL)
+                                .header("Authorization", "Basic dXNlcjpwd2Q"))
                 .andReturn().getResponse();
 
         Map map = gson.fromJson(response.getContentAsString(), Map.class);
@@ -128,6 +188,7 @@ class UserControllerTest {
         assertThat(userDtoReceived2.get("avatar")).isEqualTo(userDto2.getAvatar());
 
         verify(userService).getUsers(pageable);
+        verify(userService).validateUserExist("user", "pwd");
         verifyNoMoreInteractions(userService);
     }
 
@@ -154,6 +215,7 @@ class UserControllerTest {
         // When:
         MockHttpServletResponse response = mockMvc.perform(
                         MockMvcRequestBuilders.put(BASE_URL + "/" + id)
+                                .header("Authorization", "Basic dXNlcjpwd2Q")
                                 .content(gson.toJson(userDto))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
@@ -165,6 +227,7 @@ class UserControllerTest {
         assertThat(receivedUser).isEqualTo(userDtoWithId);
 
         verify(userService).updateUser(userDtoWithId);
+        verify(userService).validateUserExist("user", "pwd");
         verifyNoMoreInteractions(userService);
     }
 
@@ -191,6 +254,7 @@ class UserControllerTest {
         // When:
         MockHttpServletResponse response = mockMvc.perform(
                         MockMvcRequestBuilders.put(BASE_URL + "/" + id)
+                                .header("Authorization", "Basic dXNlcjpwd2Q")
                                 .content(gson.toJson(userDto))
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andReturn().getResponse();
@@ -199,6 +263,7 @@ class UserControllerTest {
         assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
 
         verify(userService).updateUser(userDtoWithId);
+        verify(userService).validateUserExist("user", "pwd");
         verifyNoMoreInteractions(userService);
     }
 }

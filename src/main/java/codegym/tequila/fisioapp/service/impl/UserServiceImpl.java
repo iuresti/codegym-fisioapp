@@ -1,6 +1,8 @@
 package codegym.tequila.fisioapp.service.impl;
 
 import codegym.tequila.fisioapp.dto.UserDto;
+import codegym.tequila.fisioapp.exception.InvalidCredentialsException;
+import codegym.tequila.fisioapp.exception.UserNotFoundException;
 import codegym.tequila.fisioapp.model.User;
 import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.EmailService;
@@ -79,6 +81,16 @@ public class UserServiceImpl implements UserService {
         }
 
         return convertUserToDto(userRepository.save(user));
+    }
+
+    @Override
+    public void validateUserExist(String user, String password) {
+        User userEntity = userRepository.findByUser(user)
+                .orElseThrow(() -> new UserNotFoundException("User " + user + " not found"));
+
+        if(!BCrypt.checkpw(password, userEntity.getPassword())){
+            throw new InvalidCredentialsException();
+        }
     }
 
     private static UserDto convertUserToDto(User user) {

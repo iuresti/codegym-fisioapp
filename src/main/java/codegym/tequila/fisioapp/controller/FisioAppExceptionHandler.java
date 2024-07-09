@@ -23,7 +23,7 @@ public class FisioAppExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<Void> handleIllegalArgumentException(IllegalArgumentException exception){
+    public ResponseEntity<Void> handleIllegalArgumentException(IllegalArgumentException exception) {
 
         logger.error("Illegal argument exception", exception);
 
