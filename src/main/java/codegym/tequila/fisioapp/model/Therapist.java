@@ -2,6 +2,7 @@ package codegym.tequila.fisioapp.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "therapists")
@@ -81,5 +82,25 @@ public class Therapist {
 
     public void setSpecialties(String specialties) {
         this.specialties = specialties;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Therapist therapist = (Therapist) o;
+        return Objects.equals(id, therapist.id)
+                && Objects.equals(firstname, therapist.firstname)
+                && Objects.equals(lastName, therapist.lastName)
+                && Objects.equals(birthDate, therapist.birthDate)
+                && Objects.equals(gender, therapist.gender)
+                && Objects.equals(phone, therapist.phone)
+                && Objects.equals(address, therapist.address)
+                && Objects.equals(specialties, therapist.specialties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstname, lastName, birthDate, gender, phone, address, specialties);
     }
 }
