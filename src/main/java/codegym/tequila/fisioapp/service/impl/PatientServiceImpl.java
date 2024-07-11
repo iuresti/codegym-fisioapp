@@ -1,12 +1,13 @@
 package codegym.tequila.fisioapp.service.impl;
 
-import codegym.tequila.fisioapp.model.MedicalRecord;
-import codegym.tequila.fisioapp.model.Patient;
+import codegym.tequila.fisioapp.dto.*;
+import codegym.tequila.fisioapp.model.*;
 import codegym.tequila.fisioapp.repository.MedicalRecordRepository;
 import codegym.tequila.fisioapp.repository.PatientRepository;
 import codegym.tequila.fisioapp.service.PatientService;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -21,20 +22,25 @@ public class PatientServiceImpl implements PatientService {
         this.medicalRecordRepository = medicalRecordRepository;
     }
 
-    public MedicalRecord getMedicalRecordForPatient(String patientId) {
+    public MedicalRecordDto getMedicalRecordForPatient(String patientId) {
 
-        Patient patientExists = patientRepository.findById(patientId).orElseThrow();
+        patientRepository.findById(patientId).orElseThrow(() -> new NoSuchElementException("Patient " + patientId + " not found"));
 
-        return medicalRecordRepository.findByPatientId(patientId).orElseThrow();
+        return MedicalRecordServiceImpl.convertMedicalRecordToDto(medicalRecordRepository.findByPatientId(patientId).orElseThrow(() -> new NoSuchElementException("Medical Record for Patient " + patientId + " not found")));
     }
 
     @Override
-    public Patient createPatient(Patient patient) {
-        Patient usagePatient = new Patient();
+    public PatientDto createPatient(PatientDto patientDto) {
+        Patient patient = new Patient();
 
-        usagePatient.setId(UUID.randomUUID().toString());
-        usagePatient.setName(patient.getName());
+        patient.setId(UUID.randomUUID().toString());
+        patient.setName(patientDto.getName());
 
-        return patientRepository.save(usagePatient);
+        patientRepository.save(patient);
+
+        patientDto.setId(patient.getId());
+
+        return patientDto;
     }
+
 }

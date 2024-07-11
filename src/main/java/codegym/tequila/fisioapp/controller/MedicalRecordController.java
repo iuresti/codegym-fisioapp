@@ -1,6 +1,6 @@
 package codegym.tequila.fisioapp.controller;
 
-import codegym.tequila.fisioapp.model.MedicalRecord;
+import codegym.tequila.fisioapp.dto.MedicalRecordDto;
 import codegym.tequila.fisioapp.service.MedicalRecordService;
 import codegym.tequila.fisioapp.service.impl.MedicalRecordServiceImpl;
 import org.springframework.http.HttpStatus;
@@ -17,20 +17,20 @@ public class MedicalRecordController {
     }
 
     @PostMapping
-    public MedicalRecord createMedicalRecord(@RequestBody MedicalRecord medicalRecord) {
-        return medicalRecordService.createMedicalRecord(medicalRecord);
+    public MedicalRecordDto createMedicalRecord(@RequestBody MedicalRecordDto medicalRecordDto) {
+        return medicalRecordService.createMedicalRecord(medicalRecordDto);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MedicalRecord> updateMedicalRecord(@PathVariable String id, @RequestBody MedicalRecord medicalRecord) {
+    public ResponseEntity<MedicalRecordDto> updateMedicalRecord(@PathVariable String id, @RequestBody MedicalRecordDto medicalRecordDto) {
 
-        medicalRecord.setId(id);
+        medicalRecordDto.setId(id);
 
-        return new ResponseEntity<>(medicalRecordService.updateMedicalRecord(medicalRecord), HttpStatus.OK);
+        return new ResponseEntity<>(medicalRecordService.updateMedicalRecord(medicalRecordDto), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public MedicalRecord findById(@PathVariable String id) {
+    public MedicalRecordDto findById(@PathVariable String id) {
         return medicalRecordService.findById(id);
     }
 

@@ -1,18 +1,11 @@
-package codegym.tequila.fisioapp.model;
-
-import jakarta.persistence.*;
+package codegym.tequila.fisioapp.dto;
 
 import java.util.Objects;
 
-@Embeddable
-public class PhysicalExploration {
-
+public class PhysicalExplorationDto {
     private Double weight;
-
     private Double height;
-    @Column(name = "weekly_cardio_frequency")
     private Integer weeklyCardioFrequency;
-    @Column(name = "blood_type")
     private String bloodType;
 
     public Double getWeight() {
@@ -35,8 +28,8 @@ public class PhysicalExploration {
         return weeklyCardioFrequency;
     }
 
-    public void setWeeklyCardioFrequency(Integer weeklyCardiofrequency) {
-        this.weeklyCardioFrequency = weeklyCardiofrequency;
+    public void setWeeklyCardioFrequency(Integer weeklyCardioFrequency) {
+        this.weeklyCardioFrequency = weeklyCardioFrequency;
     }
 
     public String getBloodType() {
@@ -48,10 +41,20 @@ public class PhysicalExploration {
     }
 
     @Override
+    public String toString() {
+        return "PhysicalExplorationDto{" +
+                "weight=" + weight +
+                ", height=" + height +
+                ", weeklyCardioFrequency=" + weeklyCardioFrequency +
+                ", bloodType='" + bloodType + '\'' +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PhysicalExploration that = (PhysicalExploration) o;
+        PhysicalExplorationDto that = (PhysicalExplorationDto) o;
         return Objects.equals(weight, that.weight) && Objects.equals(height, that.height) && Objects.equals(weeklyCardioFrequency, that.weeklyCardioFrequency) && Objects.equals(bloodType, that.bloodType);
     }
 

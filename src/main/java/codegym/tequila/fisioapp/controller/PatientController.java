@@ -1,7 +1,7 @@
 package codegym.tequila.fisioapp.controller;
 
-import codegym.tequila.fisioapp.model.MedicalRecord;
-import codegym.tequila.fisioapp.model.Patient;
+import codegym.tequila.fisioapp.dto.MedicalRecordDto;
+import codegym.tequila.fisioapp.dto.PatientDto;
 import codegym.tequila.fisioapp.service.PatientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +17,12 @@ public class PatientController {
     }
 
     @GetMapping("/{id}/medical-record")
-    public ResponseEntity<MedicalRecord> getPatientMedicalRecord(@PathVariable String id) {
-        MedicalRecord medicalRecord = patientService.getMedicalRecordForPatient(id);
-        return ResponseEntity.ok(medicalRecord);
+    public ResponseEntity<MedicalRecordDto> getPatientMedicalRecord(@PathVariable String id) {
+        return ResponseEntity.ok(patientService.getMedicalRecordForPatient(id));
     }
 
     @PostMapping
-    public Patient createPatient(@RequestBody Patient patient) {
-        return patientService.createPatient(patient);
+    public PatientDto createPatient(@RequestBody PatientDto patientDto) {
+        return patientService.createPatient(patientDto);
     }
 }

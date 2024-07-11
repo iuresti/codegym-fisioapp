@@ -2,6 +2,8 @@ package codegym.tequila.fisioapp.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "medical_record")
 public class MedicalRecord {
@@ -60,5 +62,18 @@ public class MedicalRecord {
 
     public void setFamiliarRecords(FamiliarRecords familiarRecords) {
         this.familiarRecords = familiarRecords;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MedicalRecord that = (MedicalRecord) o;
+        return Objects.equals(id, that.id) && Objects.equals(patient, that.patient) && Objects.equals(physicalExploration, that.physicalExploration) && Objects.equals(personalRecords, that.personalRecords) && Objects.equals(familiarRecords, that.familiarRecords);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, patient, physicalExploration, personalRecords, familiarRecords);
     }
 }

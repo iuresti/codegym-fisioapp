@@ -1,11 +1,14 @@
 package codegym.tequila.fisioapp.service.impl;
 
+import codegym.tequila.fisioapp.dto.*;
 import codegym.tequila.fisioapp.model.*;
 import codegym.tequila.fisioapp.repository.MedicalRecordRepository;
 import codegym.tequila.fisioapp.service.MedicalRecordService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -18,17 +21,28 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
     }
 
     @Override
-    public MedicalRecord createMedicalRecord(MedicalRecord medicalRecord) {
+    public MedicalRecordDto createMedicalRecord(MedicalRecordDto medicalRecordDto) {
+        MedicalRecord medicalRecord = new MedicalRecord();
+
         medicalRecord.setId(UUID.randomUUID().toString());
-        return medicalRecordRepository.save(medicalRecord);
+        medicalRecord.setPatient(convertPatientDtoToPatient(medicalRecordDto.getPatient()));
+        medicalRecord.setPhysicalExploration(convertPhysicalExplorationDtoToPhysicalExploration(medicalRecordDto.getPhysicalExploration()));
+        medicalRecord.setPersonalRecords(convertPersonalRecordsDtoToPersonalRecords(medicalRecordDto.getPersonalRecords()));
+        medicalRecord.setFamiliarRecords(convertFamiliarRecordsDtoToFamiliarRecords(medicalRecordDto.getFamiliarRecords()));
+
+        medicalRecordRepository.save(medicalRecord);
+
+        medicalRecordDto.setId(medicalRecord.getId());
+
+        return medicalRecordDto;
     }
 
     @Override
-    public MedicalRecord updateMedicalRecord(MedicalRecord medicalRecord) {
-        MedicalRecord medicalRecordUsage = medicalRecordRepository.findById(medicalRecord.getId()).orElseThrow();
+    public MedicalRecordDto updateMedicalRecord(MedicalRecordDto medicalRecordDto) {
+        MedicalRecord medicalRecordUsage = medicalRecordRepository.findById(medicalRecordDto.getId()).orElseThrow(() -> new NoSuchElementException("Medical Record " + medicalRecordDto.getId() + " not found"));
 
         PersonalRecords usagePersonalRecords = medicalRecordUsage.getPersonalRecords();
-        PersonalRecords updatePersonalRecords = medicalRecord.getPersonalRecords();
+        PersonalRecords updatePersonalRecords = convertPersonalRecordsDtoToPersonalRecords(medicalRecordDto.getPersonalRecords());
 
         if (updatePersonalRecords != null) {
             if (StringUtils.hasText(updatePersonalRecords.getChronicDiseases())) {
@@ -59,7 +73,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
 
         PhysicalExploration usagePhysicalExploration = medicalRecordUsage.getPhysicalExploration();
-        PhysicalExploration updatePhysicalExploration = medicalRecord.getPhysicalExploration();
+        PhysicalExploration updatePhysicalExploration = convertPhysicalExplorationDtoToPhysicalExploration(medicalRecordDto.getPhysicalExploration());
 
         if (updatePhysicalExploration != null) {
             if (updatePhysicalExploration.getWeight() != null) {
@@ -78,7 +92,7 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
         }
 
         FamiliarRecords usageFamiliarRecords = medicalRecordUsage.getFamiliarRecords();
-        FamiliarRecords updateFamiliarRecords = medicalRecord.getFamiliarRecords();
+        FamiliarRecords updateFamiliarRecords = convertFamiliarRecordsDtoToFamiliarRecords(medicalRecordDto.getFamiliarRecords());
 
         if (updateFamiliarRecords != null) {
             if (StringUtils.hasText(usageFamiliarRecords.getHereditaryDiseases())) {
@@ -90,16 +104,81 @@ public class MedicalRecordServiceImpl implements MedicalRecordService {
             medicalRecordUsage.setFamiliarRecords(usageFamiliarRecords);
         }
 
-        return medicalRecordRepository.save(medicalRecordUsage);
+        return convertMedicalRecordToDto(medicalRecordRepository.save(medicalRecordUsage));
     }
 
     @Override
-    public MedicalRecord findById(String id) {
-        return medicalRecordRepository.findById(id).orElseThrow();
+    public MedicalRecordDto findById(String id) {
+        return convertMedicalRecordToDto(medicalRecordRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Medical Record " + id + " not found")));
     }
 
-    @Override
-    public MedicalRecord findByPatientId(String id) {
-        return medicalRecordRepository.findByPatientId(id).orElseThrow();
+    static MedicalRecordDto convertMedicalRecordToDto(MedicalRecord medicalRecord) {
+        MedicalRecordDto medicalRecordDto = new MedicalRecordDto();
+        medicalRecordDto.setId(medicalRecord.getId());
+        medicalRecordDto.setPatient(convertPatientToDto(medicalRecord.getPatient()));
+        medicalRecordDto.setPhysicalExploration(convertPhysicalExplorationToDto(medicalRecord.getPhysicalExploration()));
+        medicalRecordDto.setPersonalRecords(convertPersonalRecordsToDto(medicalRecord.getPersonalRecords()));
+        medicalRecordDto.setFamiliarRecords(convertFamiliarRecordsToDto(medicalRecord.getFamiliarRecords()));
+        return medicalRecordDto;
+    }
+
+    private static FamiliarRecordsDto convertFamiliarRecordsToDto(FamiliarRecords familiarRecords) {
+        FamiliarRecordsDto familiarRecordsDto = new FamiliarRecordsDto();
+        BeanUtils.copyProperties(familiarRecords, familiarRecordsDto);
+        return familiarRecordsDto;
+    }
+
+    private static PersonalRecordsDto convertPersonalRecordsToDto(PersonalRecords personalRecords) {
+        PersonalRecordsDto personalRecordsDto = new PersonalRecordsDto();
+        BeanUtils.copyProperties(personalRecords, personalRecordsDto);
+        return personalRecordsDto;
+    }
+
+    private static PhysicalExplorationDto convertPhysicalExplorationToDto(PhysicalExploration physicalExploration) {
+        PhysicalExplorationDto physicalExplorationDto = new PhysicalExplorationDto();
+        BeanUtils.copyProperties(physicalExploration, physicalExplorationDto);
+        return physicalExplorationDto;
+    }
+
+    private static PatientDto convertPatientToDto(Patient patient) {
+        PatientDto patientDto = new PatientDto();
+        BeanUtils.copyProperties(patient, patientDto);
+        return patientDto;
+    }
+
+    static Patient convertPatientDtoToPatient(PatientDto patientDto) {
+        if (patientDto == null) {
+            return null;
+        }
+            Patient patient = new Patient();
+            BeanUtils.copyProperties(patientDto, patient);
+            return patient;
+    }
+
+    static FamiliarRecords convertFamiliarRecordsDtoToFamiliarRecords(FamiliarRecordsDto familiarRecordsDto) {
+        if (familiarRecordsDto == null) {
+            return null;
+        }
+            FamiliarRecords familiarRecords = new FamiliarRecords();
+            BeanUtils.copyProperties(familiarRecordsDto, familiarRecords);
+            return familiarRecords;
+    }
+
+    static PersonalRecords convertPersonalRecordsDtoToPersonalRecords(PersonalRecordsDto personalRecordsDto) {
+        if (personalRecordsDto == null) {
+            return null;
+        }
+            PersonalRecords personalRecords = new PersonalRecords();
+            BeanUtils.copyProperties(personalRecordsDto, personalRecords);
+            return personalRecords;
+    }
+
+    static PhysicalExploration convertPhysicalExplorationDtoToPhysicalExploration(PhysicalExplorationDto physicalExplorationDto) {
+        if (physicalExplorationDto == null) {
+            return null;
+        }
+            PhysicalExploration physicalExploration = new PhysicalExploration();
+            BeanUtils.copyProperties(physicalExplorationDto, physicalExploration);
+            return physicalExploration;
     }
 }
