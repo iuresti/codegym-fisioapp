@@ -3,7 +3,6 @@ package codegym.tequila.fisioapp.controller;
 import codegym.tequila.fisioapp.dto.TherapistDto;
 import codegym.tequila.fisioapp.service.TherapistService;
 import com.google.gson.*;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -40,37 +38,24 @@ class TherapistControllerTest {
 
     @MockBean
     private TherapistService therapistService;
+    private TherapistDto therapistDto = createTherapistDto(null);
 
-    private Gson gson;
-    private TherapistDto therapistDto;
-    private TherapistDto therapistDtoWithId;
-
-    @BeforeEach
-    void setUp() {
-        gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, (JsonSerializer<LocalDate>) (src, typeOfSrc, context) ->
-                        context.serialize(src.format(DateTimeFormatter.ISO_LOCAL_DATE)))
-                .registerTypeAdapter(LocalDate.class, (JsonDeserializer<LocalDate>) (json, typeOfT, context) ->
-                        LocalDate.parse(json.getAsString(), DateTimeFormatter.ISO_LOCAL_DATE))
-                .create();
-
-        therapistDto = createTherapistDto(null);
-        therapistDtoWithId = createTherapistDto(UUID.randomUUID().toString());
-    }
-
-    private MockHttpServletResponse performPost(Object content) throws Exception {
-        return mockMvc.perform(
-                        MockMvcRequestBuilders.post(TherapistControllerTest.BASE_URL)
-                                .content(gson.toJson(content))
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
-    }
 
     @Test
     void createTherapistTest() throws Exception {
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
+                .create();
+        therapistDto = createTherapistDto(null);
+        TherapistDto therapistDtoWithId = createTherapistDto(UUID.randomUUID().toString());
+
         when(therapistService.createTherapist(therapistDto)).thenReturn(therapistDtoWithId);
         //when
-        MockHttpServletResponse response = performPost(therapistDto);
+        MockHttpServletResponse response = mockMvc.perform(
+                        MockMvcRequestBuilders.post(BASE_URL)
+                                .content(gson.toJson(therapistDto))
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andReturn().getResponse();
 
         TherapistDto receivedTherapist = gson.fromJson(response.getContentAsString(), TherapistDto.class);
         //then
@@ -156,16 +141,8 @@ class TherapistControllerTest {
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
-        TherapistDto therapistDto = new TherapistDto();
+        therapistDto = createTherapistDto(null);
         String id = UUID.randomUUID().toString();
-
-        therapistDto.setFirstname("firstname");
-        therapistDto.setLastName("lastName");
-        therapistDto.setBirthDate(LocalDate.of(1990,1,1));
-        therapistDto.setGender("gender");
-        therapistDto.setPhone("phone");
-        therapistDto.setAddress("address");
-        therapistDto.setSpecialties("specialties");
 
         TherapistDto therapistDtoWithId = new TherapistDto();
         BeanUtils.copyProperties(therapistDto, therapistDtoWithId);
@@ -198,16 +175,7 @@ class TherapistControllerTest {
                 .registerTypeAdapter(LocalDate.class, new LocalDateAdapter())
                 .create();
         String id = UUID.randomUUID().toString();
-        TherapistDto therapistDto = new TherapistDto();
-
-        therapistDto.setId("id");
-        therapistDto.setFirstname("firstname");
-        therapistDto.setLastName("lastName");
-        therapistDto.setBirthDate(LocalDate.of(1990,1,1));
-        therapistDto.setGender("gender");
-        therapistDto.setPhone("phone");
-        therapistDto.setAddress("address");
-        therapistDto.setSpecialties("specialties");
+        therapistDto = createTherapistDto(null);
 
         when(therapistService.getTherapistById(id)).thenReturn(therapistDto);
 
