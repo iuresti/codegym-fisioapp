@@ -38,3 +38,14 @@ CREATE TABLE therapies (
   description varchar(500),
   active boolean
 );
+
+CREATE TABLE therapist (
+id VARCHAR(40),
+first_name VARCHAR(255),
+last_name VARCHAR(255),
+birth_date DATE,
+gender VARCHAR(10),
+phone VARCHAR(20),
+address VARCHAR(255),
+specialties VARCHAR(255)
+);
