@@ -27,3 +27,10 @@ spring:
       mail.smtp.starttls.required: true
       mail.smtp.auth: true
 
+  freemarker:
+    template-loader-path: classpath:/templates/
+    suffix: .ftl
+    charset: UTF-8
+    expose-request-attributes: true
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
