@@ -6,7 +6,6 @@ import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.EmailService;
 import codegym.tequila.fisioapp.service.UserService;
 import io.micrometer.common.util.StringUtils;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +22,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final EmailService emailService;
-
-    private UserDetailsService userDetailsService;
-
 
     public UserServiceImpl(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;

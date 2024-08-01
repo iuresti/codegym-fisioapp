@@ -1,6 +1,6 @@
 package codegym.tequila.fisioapp.service;
 
-import codegym.tequila.fisioapp.dto.UserDto;
+
 import org.springframework.security.core.userdetails.UserDetails;
 
 public interface JwtService {
