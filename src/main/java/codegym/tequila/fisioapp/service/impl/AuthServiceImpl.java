@@ -1,9 +1,9 @@
 package codegym.tequila.fisioapp.service.impl;
 
-import codegym.tequila.fisioapp.config.UserDetailsImpl;
 import codegym.tequila.fisioapp.dto.AuthResponse;
 import codegym.tequila.fisioapp.dto.LoginRequest;
 import codegym.tequila.fisioapp.dto.UserDto;
+import codegym.tequila.fisioapp.model.User;
 import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.AuthService;
 import codegym.tequila.fisioapp.service.JwtService;
@@ -33,10 +33,8 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse login(LoginRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-        UserDto user = UserServiceImpl.convertUserToDto(userRepository.findByUser(request.getUsername()).orElseThrow(() -> new NoSuchElementException("User not found")));
+        UserDetails user = userRepository.findByUser(request.getUsername()).orElseThrow(() -> new NoSuchElementException("User not found"));
         String token = jwtService.getToken(user);
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setToken(token);
-        return authResponse;
+        return new AuthResponse(token);
     }
 }

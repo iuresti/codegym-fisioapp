@@ -28,6 +28,6 @@ public class AuthController {
 @PostMapping("/registrer")
     public ResponseEntity<AuthResponse> registrer(){
 
-        return ResponseEntity.ok(new AuthResponse());
+        return ResponseEntity.ok(new AuthResponse(""));
     }
 }

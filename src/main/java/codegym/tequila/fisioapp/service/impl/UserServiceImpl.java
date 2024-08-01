@@ -11,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +44,7 @@ public class UserServiceImpl implements UserService {
         user.setUser(userDto.getUser());
         user.setLastName(userDto.getLastName());
         user.setName(userDto.getName());
-        user.setPassword(BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt()));
+        user.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
 
         userRepository.save(user);
 
@@ -84,7 +85,7 @@ public class UserServiceImpl implements UserService {
         return convertUserToDto(userRepository.save(user));
     }
 
-    public static UserDto convertUserToDto(User user) {
+    private static UserDto convertUserToDto(User user) {
         UserDto userDto = new UserDto();
 
         BeanUtils.copyProperties(user, userDto);
