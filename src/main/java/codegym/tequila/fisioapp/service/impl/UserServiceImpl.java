@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         return convertUserToDto(userRepository.save(user));
     }
 
-    private static UserDto convertUserToDto(User user) {
+    public static UserDto convertUserToDto(User user) {
         UserDto userDto = new UserDto();
 
         BeanUtils.copyProperties(user, userDto);

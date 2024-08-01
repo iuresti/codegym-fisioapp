@@ -1,5 +1,7 @@
 package codegym.tequila.fisioapp.dto;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Objects;
 import java.util.StringJoiner;
 
