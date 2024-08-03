@@ -14,11 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.NoSuchElementException;
 
 @Configuration
-public class ApplicationConfig {
+public class AuthConfig {
 
     private final UserRepository userRepository;
 
-    public ApplicationConfig(UserRepository userRepository) {
+    public AuthConfig(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
