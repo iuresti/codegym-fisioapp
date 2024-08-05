@@ -1,13 +1,17 @@
 package codegym.tequila.fisioapp.controller;
 
 import codegym.tequila.fisioapp.dto.UserDto;
+import codegym.tequila.fisioapp.jwt.JwtAuthenticationFilter;
 import codegym.tequila.fisioapp.service.UserService;
+import codegym.tequila.fisioapp.service.impl.JwtServiceImpl;
+import codegym.tequila.fisioapp.testConfig.TestSecurityConfig;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(UserController.class)
+@Import({JwtAuthenticationFilter.class, JwtServiceImpl.class, TestSecurityConfig.class})
 class UserControllerTest {
 
     private static final String BASE_URL = "/api/user";
@@ -32,7 +37,6 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
-
 
     @Test
     public void createUserTest() throws Exception {
