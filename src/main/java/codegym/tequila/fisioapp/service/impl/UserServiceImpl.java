@@ -6,10 +6,10 @@ import codegym.tequila.fisioapp.repository.UserRepository;
 import codegym.tequila.fisioapp.service.EmailService;
 import codegym.tequila.fisioapp.service.UserService;
 import io.micrometer.common.util.StringUtils;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +21,6 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final EmailService emailService;
-
 
     public UserServiceImpl(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
         user.setUser(userDto.getUser());
         user.setLastName(userDto.getLastName());
         user.setName(userDto.getName());
-        user.setPassword(BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt()));
+        user.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
 
         userRepository.save(user);
 

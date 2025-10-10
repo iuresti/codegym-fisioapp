@@ -4,6 +4,7 @@ import codegym.tequila.fisioapp.dto.TherapyDto;
 import codegym.tequila.fisioapp.service.TherapyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -55,6 +56,7 @@ public class TherapyController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('DOCTOR')")
     public ResponseEntity<List<TherapyDto>> getTherapies(
             @RequestParam(required = false) Integer pageSize,
             @RequestParam(required = false) Integer pageIndex,

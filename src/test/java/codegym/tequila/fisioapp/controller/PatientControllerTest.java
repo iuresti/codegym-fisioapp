@@ -1,13 +1,17 @@
 package codegym.tequila.fisioapp.controller;
 
 import codegym.tequila.fisioapp.dto.*;
+import codegym.tequila.fisioapp.jwt.JwtAuthenticationFilter;
 import codegym.tequila.fisioapp.service.PatientService;
+import codegym.tequila.fisioapp.service.impl.JwtServiceImpl;
+import codegym.tequila.fisioapp.testConfig.TestSecurityConfig;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -20,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 @WebMvcTest(PatientController.class)
+@Import({JwtAuthenticationFilter.class, JwtServiceImpl.class, TestSecurityConfig.class})
 public class PatientControllerTest {
 
     private static final String BASE_URL = "/api/patient";
